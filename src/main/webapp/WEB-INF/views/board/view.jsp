@@ -133,30 +133,25 @@ $(document).ready(function() {
      <table class="table table-hover">
       <thead>
       <tr style="background-color: #dee2e6;">
-         <th scope="col" class="text-center" style="width:10%">번호</th>
-         <th scope="col" class="text-center" style="width:55%">제목</th>
+         <th scope="col" class="text-center" style="width:75%">댓글</th>
          <th scope="col" class="text-center" style="width:10%">작성자</th>
          <th scope="col" class="text-center" style="width:15%">날짜</th>
-         <th scope="col" class="text-center" style="width:10%">조회수</th>
       </tr>
       </thead>
       <tbody>
 <c:if test="${!empty replylist}">
    <c:forEach var="hiBoard" items="${replylist}" varStatus="status"> 
-   	<c:if test="${hiBoard.hiBbsParent eq hiBoard.hiBbsGroup}"> 
+      <c:if test="${hiBoard.hiBbsParent eq hiBoard.hiBbsGroup}"> 
       <tr>
-         <td class="text-center">${hiBoard.hiBbsSeq}</td>
          <td>
-            <a href="javascript:void(0)" onclick="fn_view(${hiBoard.hiBbsSeq})">
       
          <img src="/resources/images/icon_reply.gif" style="margin-left: ${hiBoard.hiBbsIndent}em;"/>
       
-               <c:out value="${hiBoard.hiBbsTitle}" />
-            </a>
+               <c:out value="${hiBoard.hiBbsContent}" />
+            
          </td>
-         <td class="text-center"><c:out value="${hiBoard.userName}" /></td>
+         <td class="text-center"><c:out value="${hiBoard.userEmail}" /></td>
          <td class="text-center">${hiBoard.regDate}</td>
-         <td class="text-center"><fmt:formatNumber type="number" maxFractionDigits="3" value="${hiBoard.hiBbsReadCnt}" /></td>
       </tr>
      </c:if>
    </c:forEach>
@@ -171,12 +166,12 @@ $(document).ready(function() {
    
    
    
-   <!-- 안녕 -->
+   
    
    
    
    <button type="button" id="btnList" class="btn btn-secondary">리스트</button>
-   <button type="button" id="btnReply" class="btn btn-secondary">답변</button>
+   <button type="button" id="btnReply" class="btn btn-secondary">댓글달기</button>
    <c:if test="${boardMe eq 'Y'}">
    <button type="button" id="btnUpdate" class="btn btn-secondary">수정</button>
    <button type="button" id="btnDelete" class="btn btn-secondary">삭제</button>

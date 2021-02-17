@@ -330,17 +330,19 @@ WHERE HIBBS_SEQ = #{value}
 <select id="boardReplyList" parameterType="com.icia.web.model.HiBoard" resultMap="hiBoardResultMap">
  SELECT 
  HIBBS_SEQ,
-       USER_ID,
-       HIBBS_GROUP,
-       HIBBS_ORDER,
-       HIBBS_INDENT,
-       HIBBS_TITLE,
-       HIBBS_CONTENT,
-       HIBBS_READ_CNT,
-       REG_DATE,
-       HIBBS_PARENT
-FROM TBL_HIBOARD 
+       NVL(A.USER_ID, '') AS USER_ID,
+       NVL(B.USER_EMAIL2, '') AS USER_EMAIL,
+       NVL(A.HIBBS_GROUP, '') AS HIBBS_GROUP,
+       NVL(A.HIBBS_ORDER, '') AS HIBBS_ORDER,
+       NVL(A.HIBBS_INDENT, '') AS HIBBS_INDENT,
+       NVL(A.HIBBS_TITLE, '') AS HIBBS_TITLE,
+       NVL(A.HIBBS_CONTENT, '') AS HIBBS_CONTENT,
+       NVL(A.HIBBS_READ_CNT, '') AS HIBBS_READ_CNT,
+       NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+       NVL(A.HIBBS_PARENT, '') AS HIBBS_PARENT
+FROM TBL_HIBOARD A, TBL_USER2 B
 WHERE HIBBS_PARENT = #{hiBbsSeq}
+  AND A.USER_ID = B.USER_ID2
 </select>
 <!-- 답변 리스트 끝 -->
 </mapper>
