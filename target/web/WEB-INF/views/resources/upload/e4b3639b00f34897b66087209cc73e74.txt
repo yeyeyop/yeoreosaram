@@ -1,0 +1,47 @@
+1월 18일 회의 내용 정리
+-지도 API
+-로그인창 API
+-숙소 API
++ 메뉴 구성, 풀캘린더 구경하기(찾아보기)
+
+<카카오톡 지도 api>
+1. https://developers.kakao.com/ 
+2. 로그인 > 내 애플리케이션 > 
+3. "혜령이 프로젝트"
+4. 앱키 : 8ae7587281a182264223c3821e2b47b5
+* 웹 도메인 연결 : 플랫폼 > Web > http://board.icia.co.kr:8088 여기까지만 쓰기 
+
+<지도 api>
+1. https://www.ncloud.com/product/applicationService/maps
+2. 이용신청하기 
+3. Application 등록
+4. 이름 쓰고(영문자), Web Dynamic Map 클릭, 내 url 등록 http://board.icia.co.kr:8088/boardMap/map.jsp
+5. 클라이언트 아이디 복사, 클라이언트 시크릿 복사 
+
+voxey2iyw7
+OfeS4JnO08EgEpcGdPYMugHffs9BmSp0TGuqrkbQ
+
+6. ★ 서비스 구분의 작은 아이콘 클릭 후, Web Dynamic Map v3 사이트 바로가기 누르기 > 시작하기 
+> example > 여러 지도 모양 여기서 바디 원하는 지도 중 바디 부분에 태그 넣기
+7. html 태그 복사
+8. 클라이언트 아이디에 복사하 거 붙여넣기
+9. 원하는 위치는, 구글맵에서 찾고 그 위치는 url에서 보면 앞쪽 위도 경도 복사 후, 삽입 / 줌 크기 변경 (zoom: 숫자)
+
+<로그인창 api>
+1. https://developers.kakao.com/ > 시작하기
+2. 내 애플리케이션 > 애플리케이션 추가하기 > 앱 이름, 사업자명 적어주기(난 동일하게 함)
+3. 그 애플리케이션 들어가면, JavaScript 키 복사해놓기
+4. 플랫폼 > 플랫폼 설정하기 
+> Web > 웹 플랫폼 등록 > 포트번호만 등록 (http://board.icia.co.kr:8088)
+> 밑에 등록하러 가기 누르기 > 
+5. 활성화 설정 on으로 바꾸기 => 활성화를 해야 카카오톡 로그인이 가능해짐
+6. Redirect URL 등록하기 > url 모두 등록 (http://board.icia.co.kr:8088/boardPro/login.jsp)
+7. 옆 메뉴쪽에 동의항목 클릭 > 원하는 것 설정
+* ex)  프로필 정보 (필수동의 / 동의목적 : 서비스사용) / 카카오계정(이메일) (선택동의 / 같음) / 성별 (선택동의 / 같음) 
+=> 이 3가지 부분을 사용할 수 있는 구조가 완성됨 => 이 항목의 ID 부분의 단어들 필요함 
+
+
+
+
+
+
