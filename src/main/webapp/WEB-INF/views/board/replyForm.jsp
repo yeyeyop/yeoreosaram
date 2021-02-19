@@ -8,26 +8,28 @@
 $(document).ready(function() {
 <c:choose>
    <c:when test="${empty hiBoard}">
-   alert("답변할 게시물이 존재하지 않습니다");
+   
+   alert("답변할 게시물이 존재하지 않습니다.");
    location.href = "/board/list";
    
    </c:when>
    <c:otherwise>
+      
    
-   
-   $("#hiBbsTitle").focus();
+   //$("#hiBbsTitle").focus();
+   $("#hiBbsContent").focus();
    
    $("#btnReply").on("click", function() {
       
-      $("#btnReply").prop("disabled", true);  // 답변 버튼 비활성화
+      $("#btnReply").prop("disabled", true);  // 답변 버튼 활성화
       
-      if($.trim($("#hiBbsTitle").val()).length <= 0)
+     /* if($.trim($("#hiBbsTitle").val()).length <= 0)
       {
          alert("제목을 입력하세요.");
          $("#hiBbsTitle").val("");
          $("#hiBbsTitle").focus();
          return;
-      }
+      }*/
       
       if($.trim($("#hiBbsContent").val()).length <= 0)
       {
@@ -57,8 +59,10 @@ $(document).ready(function() {
            {
               if(response.code == 0)
               {
-                 alert("답변이 완료되었습니다.");
-                 location.href = "/board/list";
+                 alert("답변이 완료되었습니다.");                 
+                 //location.href = "/board/view?hiBbsSeq=" + document.replyForm.hiBbsSeq.value;   >> 얘는 get방식
+                 document.bbsForm.action = "/board/view";   // 얘는 post방식이라서 submit을 쓸때는 action을 반드시 해줘야함
+                 document.bbsForm.submit();
               }
               else if(response.code == 400)
               {
@@ -90,7 +94,7 @@ $(document).ready(function() {
       document.bbsForm.submit();
    });
    </c:otherwise>
-</c:choose>   
+</c:choose>
 });
 </script>
 </head>
@@ -100,15 +104,15 @@ $(document).ready(function() {
 <div class="container">
    <h2>게시물 답변</h2>
    <form name="replyForm" id="replyForm" method="post" enctype="multipart/form-data">
-      <input type="text" name="userName" id="userName" maxlength="20" value="${user.userName}" style="ime-mode:active;" class="form-control mt-4 mb-2" placeholder="이름을 입력해주세요." readonly />
-      <input type="text" name="userEmail" id="userEmail" maxlength="30" value="${user.userEmail}"  style="ime-mode:inactive;" class="form-control mb-2" placeholder="이메일을 입력해주세요." readonly />
-      <input type="text" name="hiBbsTitle" id="hiBbsTitle" maxlength="100" style="ime-mode:active;" value="" class="form-control mb-2" placeholder="제목을 입력해주세요." required />
+      <input type="text" name="userName2" id="userName2" maxlength="20" value="${user2.userName2}" style="ime-mode:active;" class="form-control mt-4 mb-2" placeholder="이름을 입력해주세요." readonly />
+      <input type="text" name="userEmail2" id="userEmail2" maxlength="30" value="${user2.userEmail2}"  style="ime-mode:inactive;" class="form-control mb-2" placeholder="이메일을 입력해주세요." readonly />
+    <!--   <input type="text" name="hiBbsTitle" id="hiBbsTitle" maxlength="100" style="ime-mode:active;" value="" class="form-control mb-2" placeholder="제목을 입력해주세요." required /> -->
       <div class="form-group">
          <textarea class="form-control" rows="10" name="hiBbsContent" id="hiBbsContent" style="ime-mode:active;" placeholder="내용을 입력해주세요" required></textarea>
       </div>
       <input type="file" name="hiBbsFile" id="hiBbsFile" class="form-control mb-2" placeholder="파일을 선택하세요." required />
-      <input type="hidden" name="hiBbsSeq" value="${hiBoard.hiBbsSeq}" />
-      <input type="hidden" name="searchType" value="${searchType}" />
+      <input type="hidden" name="hiBbsSeq" id="hiBbsSeq" value="${hiBoard.hiBbsSeq}" />
+      <input type="hidden" name="searchType" value="${serachType}" />
       <input type="hidden" name="searchValue" value="${searchValue}" />
       <input type="hidden" name="curPage" value="${curPage}" />
    </form>
@@ -122,7 +126,7 @@ $(document).ready(function() {
 </div>
 <form name="bbsForm" id="bbsForm" method="post">
    <input type="hidden" name="hiBbsSeq" value="${hiBoard.hiBbsSeq}" />
-   <input type="hidden" name="searchType" value="${searchType}" />
+   <input type="hidden" name="searchType" value="${serachType}" />
    <input type="hidden" name="searchValue" value="${searchValue}" />
    <input type="hidden" name="curPage" value="${curPage}" />
 </form>

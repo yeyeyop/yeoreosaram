@@ -134,9 +134,18 @@ function popup(){
 </c:if>   
       </ul>
    </nav>
-   
+<%
+   if(com.icia.web.util.CookieUtil.getCookie(request, (String)request.getAttribute("AUTH_COOKIE_NAME")) != null)
+   {
+%>      
    <button type="button" id="btnWrite" class="btn btn-secondary mb-3">글쓰기</button>
-   
+<%
+   }
+   else
+   {
+      
+   }
+%>  
    <form name="bbsForm" id="bbsForm" method="post">
       <input type="hidden" name="hiBbsSeq" value="" />
       <input type="hidden" name="searchType" value="${searchType}" />

@@ -352,5 +352,35 @@ public class UserController2
 		
 		return ajaxResponse;
 	}
+	
+	 /**
+	  * 고객센터
+		 */
+		@RequestMapping(value="/user/customerCenter", method=RequestMethod.GET)
+		public String customerCenter(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+		{
+			String cookieUserId2 = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
+			
+			User2 user2 = userService2.userSelect2(cookieUserId2);
+			
+			model.addAttribute("user2", user2);
+			
+			return "/user/customerCenter";
+		}
+		
+		 /**
+		  * 관리자 센터
+			 */
+			@RequestMapping(value="/user/adminCenter", method=RequestMethod.GET)
+			public String adminCenter(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+			{
+				String cookieUserId2 = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
+				
+				User2 user2 = userService2.userSelect2(cookieUserId2);
+				
+				model.addAttribute("user2", user2);
+				
+				return "/user/adminCenter";
+			}	
    
 }

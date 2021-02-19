@@ -31,7 +31,7 @@
            <a class="nav-link" href="/user/updateForm2">회원정보수정</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" href="#">고객센터</a>
+           <a class="nav-link" href="/user/customerCenter">고객센터</a>
          </li>
        </ul>
      </div>
@@ -76,7 +76,7 @@
            <a class="nav-link" href="/board/list">동행게시판</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" href="#">고객센터</a>
+           <a class="nav-link" href="/user/customerCenter">고객센터</a>
          </li>
        </ul>
      </div>

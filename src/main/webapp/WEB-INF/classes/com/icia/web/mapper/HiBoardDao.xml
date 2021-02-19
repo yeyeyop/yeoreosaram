@@ -152,6 +152,7 @@ DELETE FROM TBL_HIBOARD
 SELECT COUNT(A.HIBBS_SEQ) AS CNT
   FROM TBL_HIBOARD A, TBL_USER2 B
  WHERE A.USER_ID = B.USER_ID2
+
 <if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
    <choose>
       <when test='searchType == "1"'>
@@ -166,6 +167,34 @@ SELECT COUNT(A.HIBBS_SEQ) AS CNT
       </choose>
 </if>   
 </select>
+
+
+
+<select id="boardListCount2" parameterType="com.icia.web.model.HiBoard" resultType="long">
+SELECT COUNT(A.HIBBS_SEQ) AS CNT
+  FROM TBL_HIBOARD A, TBL_USER2 B
+ WHERE A.USER_ID = B.USER_ID2
+   AND A.HIBBS_ORDER = 0
+<if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
+   <choose>
+      <when test='searchType == "1"'>
+   AND B.USER_NAME2 LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test='searchType == "2"'>
+   AND A.HIBBS_TITLE LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test='searchType == "3"'>
+   AND DBMS_LOB.INSTR(A.HIBBS_CONTENT, #{searchValue}) > 0
+         </when>
+      </choose>
+</if>   
+</select>
+
+
+
+
+
+
 <!-- 총 게시물 수 끝 -->
 
 <!-- 게시물 리스트 시작 -->
@@ -212,6 +241,8 @@ FROM (  SELECT ROWNUM AS RNUM,
                     TBL_HIBOARD A, TBL_USER2 B
                 WHERE
                     A.USER_ID = B.USER_ID2
+                  AND
+                     A.HIBBS_ORDER = 0
 <if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
    <choose>   
       <when test='searchType == "1"'>                 
@@ -230,7 +261,26 @@ WHERE
         RNUM <![CDATA[>=]]> #{startRow}
 AND
         RNUM <![CDATA[<=]]> #{endRow}
+
 </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- 게시물 리스트 끝 -->
 
 <!-- 게시물 삭제시 답변글 수 체크 시작 -->

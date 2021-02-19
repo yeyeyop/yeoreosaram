@@ -171,7 +171,18 @@ $(document).ready(function() {
    
    
    <button type="button" id="btnList" class="btn btn-secondary">리스트</button>
+<%
+   if(com.icia.web.util.CookieUtil.getCookie(request, (String)request.getAttribute("AUTH_COOKIE_NAME")) != null)
+   {
+%>  
    <button type="button" id="btnReply" class="btn btn-secondary">댓글달기</button>
+<%
+   }
+   else
+   {
+      
+   }
+%>     
    <c:if test="${boardMe eq 'Y'}">
    <button type="button" id="btnUpdate" class="btn btn-secondary">수정</button>
    <button type="button" id="btnDelete" class="btn btn-secondary">삭제</button>

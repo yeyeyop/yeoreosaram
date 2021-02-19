@@ -77,6 +77,34 @@ public class HiBoardService
       return count;
    }
    
+   
+   
+   
+   public long boardListCount2(HiBoard hiBoard)
+   {
+      long count = 0;
+      
+      try
+      {
+         count = hiBoardDao.boardListCount2(hiBoard);
+      }
+      catch(Exception e)
+      {
+         logger.error("[HiBoardService] boardListCount Exception", e);
+      }
+      
+      return count;
+   }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    //게시물 리스트
    public List<HiBoard> boardList(HiBoard hiBoard)
    {
@@ -93,6 +121,15 @@ public class HiBoardService
       
       return  list;
    }
+   
+   
+
+   
+   
+   
+   
+   
+   
    
    //게시물 등록      hiBoardDao.boardInsert(hiBoard)가 오류없이 진행되어도 
    //hiBoardDao.boardFileInsert(hiBoardFile)여기서 오류가 나면 hiBoardDao.boardInsert(hiBoard)까지 롤백한다는 의미

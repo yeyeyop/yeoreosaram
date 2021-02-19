@@ -184,13 +184,13 @@ public class HiBoardController
       String cookieUserId = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
       
       long hiBbsSeq = HttpUtil.get(request, "hiBbsSeq", (long)0);
-      String hiBbsTitle = HttpUtil.get(request, "hiBbsTitle", "");
+      //String hiBbsTitle = HttpUtil.get(request, "hiBbsTitle", "");
       String hiBbsContent = HttpUtil.get(request, "hiBbsContent", "");
       
       FileData fileData = HttpUtil.getFile(request, "hiBbsFile", UPLOAD_SAVE_DIR);
       Response<Object> ajaxResponse = new Response<Object>();
       
-      if(hiBbsSeq > 0 && !StringUtil.isEmpty(hiBbsTitle) && !StringUtil.isEmpty(hiBbsContent))
+      if(hiBbsSeq > 0 /*&& !StringUtil.isEmpty(hiBbsTitle)*/ && !StringUtil.isEmpty(hiBbsContent))
       {
          HiBoard parentHiBoard = hiBoardService.boardSelect(hiBbsSeq);      //댓글은 부모밑에 있기때문에 parent라고 써줌
          
@@ -199,7 +199,7 @@ public class HiBoardController
             HiBoard hiBoard = new HiBoard();
             
             hiBoard.setUserId(cookieUserId);
-            hiBoard.setHiBbsTitle(hiBbsTitle);
+           // hiBoard.setHiBbsTitle(hiBbsTitle);
             hiBoard.setHiBbsContent(hiBbsContent);
             hiBoard.setHiBbsGroup(parentHiBoard.getHiBbsGroup());
             hiBoard.setHiBbsOrder(parentHiBoard.getHiBbsOrder() + 1);
@@ -222,7 +222,7 @@ public class HiBoardController
             {
                if(hiBoardService.boardReplyInsert(hiBoard) > 0)
                {
-                  ajaxResponse.setResponse(0, "Success");
+                  ajaxResponse.setResponse(0, "Success", hiBoard);
                }
                else
                {
@@ -486,6 +486,10 @@ public class HiBoardController
          
          HiBoard hiBoard = null;
          
+         logger.debug("1111111111111111===================================================");
+         logger.debug("===== hiBbsSeq [" + hiBbsSeq + "]==============================");
+         
+         
          if(hiBbsSeq > 0)
          {
             hiBoard = hiBoardService.boardView(hiBbsSeq);
@@ -545,6 +549,8 @@ public class HiBoardController
             list = hiBoardService.boardList(search);
             
             /////
+            logger.debug("===================================================");
+            logger.debug("===================== hiBoard bbs_seq [" + hiBoard.getHiBbsSeq() + "]======================================");
             replylist = hiBoardService.boardReplyList(hiBoard);
          }
          
@@ -646,7 +652,7 @@ public class HiBoardController
    public String list(ModelMap model, HttpServletRequest request, HttpServletResponse response)
    {
       //조회항목(1:작성자조회, 2:제목조회, 3:내용조회)
-      String searchType = HttpUtil.get(request, "serachType");
+      String searchType = HttpUtil.get(request, "searchType");
       //조회값
       String searchValue = HttpUtil.get(request, "searchValue");
       //현재 페이지
@@ -671,7 +677,7 @@ public class HiBoardController
          searchValue = "";
       }
       
-      totalCount = hiBoardService.boardListCount(search);
+      totalCount = hiBoardService.boardListCount2(search);
       
       logger.debug("totalCount : " + totalCount);
       logger.debug("curPage : " + curPage);
