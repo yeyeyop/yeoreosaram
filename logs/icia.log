@@ -9724,3 +9724,12 @@ Caused by: java.nio.channels.ClosedByInterruptException: null
 [2021-02-19 11:34:05.419] [http-nio-8088-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - GET "/user/resources/vendor/line-awesome/css/line-awesome.min.css", parameters={}
 [2021-02-19 11:34:05.420] [http-nio-8088-exec-1] WARN  o.s.web.servlet.PageNotFound - No mapping for GET /user/resources/vendor/line-awesome/css/line-awesome.min.css
 [2021-02-19 11:34:05.420] [http-nio-8088-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 404 NOT_FOUND
+[2021-02-19 11:34:05.430] [http-nio-8088-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - GET "/user/resources/vendor/owl.carousel/assets/owl.carousel.min.css", parameters={}
+[2021-02-19 11:34:05.431] [http-nio-8088-exec-4] WARN  o.s.web.servlet.PageNotFound - No mapping for GET /user/resources/vendor/owl.carousel/assets/owl.carousel.min.css
+[2021-02-19 11:34:05.431] [http-nio-8088-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 404 NOT_FOUND
+[2021-02-19 11:34:05.440] [http-nio-8088-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - GET "/user/resources/css/style.css", parameters={}
+[2021-02-19 11:34:05.441] [http-nio-8088-exec-2] WARN  o.s.web.servlet.PageNotFound - No mapping for GET /user/resources/css/style.css
+[2021-02-19 11:34:05.441] [http-nio-8088-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 404 NOT_FOUND
+[2021-02-19 11:34:05.485] [http-nio-8088-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/resources/images/travel.png", parameters={}
+[2021-02-19 11:34:05.486] [http-nio-8088-exec-7] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Mapped to ResourceHttpRequestHandler ["/WEB-INF/views/resources/"]
+[2021-02-19 11:34:05.493] [http-nio-8088-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
