@@ -1,7 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/include/taglib2.jsp" %>
+
 <!DOCTYPE html>
 <html>
-<head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -121,11 +123,10 @@ function fn_validateEmail(value)
    return emailReg.test(value);
 }
 </script>
-</head>
 <body>
-<%@ include file="/WEB-INF/views/include/navigation.jsp" %>
+<%@ include file="/WEB-INF/views/include/teamNavigation.jsp" %>
 <div class="container">
-    <div class="row mt-5">
+    <div  class="form-group">
        <h1>회원정보수정</h1>
     </div>
     <div class="row mt-2">
@@ -153,10 +154,15 @@ function fn_validateEmail(value)
                 </div>
                 <input type="hidden" id="userId2" name="userId2" value="${user2.userId2}" />
                 <input type="hidden" id="userPwd2" name="userPwd2" value="" />
+                <div class="form-group">
+                   <div class="btn-group">
                 <button type="button" id="btnUpdate" class="btn btn-primary">수정</button>
+                	</div>
+                </div>
+                
             </form>
         </div>
     </div>
 </div>
 </body>
-</html>   
+</html>

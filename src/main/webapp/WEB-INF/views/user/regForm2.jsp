@@ -1,31 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib2.jsp" %>
 <!-- navigation -->
-<%@ include file="/WEB-INF/views/include/navigation3.jsp" %>
+<%@ include file="/WEB-INF/views/include/teamNavigation2.jsp" %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
-<style>
-	body {
-	  /*padding-top: 40px; */
-	  padding-bottom: 40px;
-	  /*background-color: #eee; */
-	}
-	.form-group {
-	max-width: 330px;
-	padding: 15px;
-	margin: auto;
-	}
-	.btn-group button{ 
-	border: 1px solid #F5dF4D; background-color: rgba(0,0,0,0); color: #F5dF4D; padding: auto;
-	margin: 0 auto; text-align: center;
-	} 
-	.btn-group button:hover{ color:white; background-color: #F5dF4D; }
-
-	
-</style>
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -278,9 +259,9 @@ function fn_validateEmail(value)
                 
                 <!-- 등록부분 css 추가 -->
                 <div class="form-group">
-	                <div class="btn-group">
-	                	<button type="button" id="btnReg2" class="btn btn-outline-warning">등록</button>
-	                </div>
+                   <div class="btn-group">
+                      <button type="button" id="btnReg2" class="btn btn-outline-warning">등록</button>
+                   </div>
                 </div>
             </form>
         </div>

@@ -29,7 +29,7 @@
 <link href="resources/images/favicon3.png" rel="icon">
 
 <!-- ======= Navbar ======= -->
-<%@ include file="/WEB-INF/views/include/navigation3.jsp" %>
+<%@ include file="/WEB-INF/views/include/teamNavigation2.jsp" %>
 
 <body>   
 

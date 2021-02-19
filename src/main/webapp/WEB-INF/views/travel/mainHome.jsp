@@ -4,47 +4,8 @@
 <%@ page import="com.icia.web.util.HttpUtil"%>
 
 <!DOCTYPE html>
-<html lang="ko">
-
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>MyPortfolio Bootstrap Template - Works</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="resources/images/favicon.png" rel="icon">
-  <link href="resources/images/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="resources/vendor/icofont/icofont.min.css" rel="stylesheet">
-  <link href="resources/vendor/aos/aos.css" rel="stylesheet">
-  <link href="resources/vendor/line-awesome/css/line-awesome.min.css" rel="stylesheet">
-  <link href="resources/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="resources/css/style.css" rel="stylesheet">
-   
-<script>
-
-
-function popup(){
-       var url = "/calendar/calendar.jsp";
-       var name = "popup test";
-       var option = "width = 500, height = 300, top = 100, left = 200, location = no"
-       window.open(url, name, option);
-  }
-
-
-
-</script>
-</head>
+<html>
+<%@ include file="/WEB-INF/views/include/head.jsp" %> 
 
 <body>
 <%@ include file="/WEB-INF/views/include/teamNavigation.jsp" %>
@@ -53,11 +14,10 @@ function popup(){
     <!-- ======= Works Section ======= -->
     <section class="section site-portfolio">
       <div class="container">
+      
         <div class="row mb-5 align-items-center">
-          <div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-            <a class="nav-link" href="#">
-              <img src="resources/images/travel.png" width="50" height="50" alt="" loading="lazy"></a>
-          </div>
+
+          
           <div class="col-md-12 text-center" data-aos="fade-up" data-aos-delay="100">
             <div id="filters" class="filters">
               <a href="#" data-filter="*" class="active">여러사람</a>
@@ -66,6 +26,7 @@ function popup(){
               <a href="#" data-filter=".branding">리뷰</a>
             </div>
           </div>
+          
         </div>
       <hr/>
         <div class="text-center">
