@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/include/taglib.jsp" %>    
+<%@ include file="/WEB-INF/views/include/taglib2.jsp" %>    
 <!DOCTYPE html>
 <html>
-<head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %> 
+<title>동행 게시판</title>
 <script type="text/javascript">
 $(document).ready(function() {
     
@@ -51,8 +51,6 @@ function popup(){
 }
 
 </script>
-
-</head>
 <body>
 <%@ include file="/WEB-INF/views/include/teamNavigation.jsp" %>
 <div class="container">
@@ -69,13 +67,15 @@ function popup(){
             <option value="3" <c:if test="${searchType eq '3'}">selected</c:if>>내용</option>
          </select>
          <input type="text" name="_searchValue" id="_searchValue" value="${searchValue}" class="form-control mx-1" maxlength="20" style="width:auto;ime-mode:active;" placeholder="조회값을 입력하세요." />
-         <button type="button" id="btnSearch" class="btn btn-secondary mb-3 mx-1">조회</button>
+         <div class="btn-group">
+            <button type="button" id="btnSearch" class="btn btn-secondary mb-3 mx-1">조회</button>
+         </div>
       </div>
     </div>
     
    <table class="table table-hover">
       <thead>
-      <tr style="background-color: #dee2e6;">
+      <tr style="background-color: #F5dF4D;">
          <th scope="col" class="text-center" style="width:10%">번호</th>
          <th scope="col" class="text-center" style="width:55%">제목</th>
          <th scope="col" class="text-center" style="width:10%">작성자</th>
@@ -138,7 +138,9 @@ function popup(){
    if(com.icia.web.util.CookieUtil.getCookie(request, (String)request.getAttribute("AUTH_COOKIE_NAME")) != null)
    {
 %>      
-   <button type="button" id="btnWrite" class="btn btn-secondary mb-3">글쓰기</button>
+   <div class="btn-group">
+      <button type="button" id="btnWrite" class="btn btn-secondary mb-3">글쓰기</button>
+   </div>
 <%
    }
    else

@@ -393,6 +393,7 @@ WHERE HIBBS_SEQ = #{value}
 FROM TBL_HIBOARD A, TBL_USER2 B
 WHERE HIBBS_PARENT = #{hiBbsSeq}
   AND A.USER_ID = B.USER_ID2
+ORDER BY REG_DATE DESC
 </select>
 <!-- 답변 리스트 끝 -->
 </mapper>

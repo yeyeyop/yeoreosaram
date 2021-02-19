@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
+<%@ include file="/WEB-INF/views/include/taglib2.jsp" %>
 <%
    // 개행문자 값을 저장한다.
    //개행문자 값을 newLine에 저장해서 JSTL에서 쓴다는것
@@ -95,13 +95,13 @@ $(document).ready(function() {
 </head>
 <body>
 <c:if test="${!empty hiBoard}">
-<%@ include file="/WEB-INF/views/include/navigation.jsp" %>
+<%@ include file="/WEB-INF/views/include/teamNavigation.jsp" %>
 <div class="container">
    <h2>게시물 보기</h2>
    <div class="row" style="margin-right:0; margin-left:0;">
       <table class="table">
          <thead>
-            <tr class="table-active">
+            <tr class="table-active" style="color:#939597">
                <th scope="col" style="width:60%">
                   <c:out value="${hiBoard.hiBbsTitle}" /><br/>
                   <c:out value="${hiBoard.userName}" />&nbsp;&nbsp;&nbsp;
@@ -169,7 +169,8 @@ $(document).ready(function() {
    
    
    
-   
+   <!-- btn-group은 색상 -->
+   <div class="btn-group">
    <button type="button" id="btnList" class="btn btn-secondary">리스트</button>
 <%
    if(com.icia.web.util.CookieUtil.getCookie(request, (String)request.getAttribute("AUTH_COOKIE_NAME")) != null)
@@ -191,6 +192,7 @@ $(document).ready(function() {
    <br/>
 </div>
 </c:if>
+</div>
 <form name="bbsForm" id="bbsForm" method="post">
    <input type="hidden" name="hiBbsSeq" value="${hiBbsSeq}" />
    <input type="hidden" name="searchType" value="${searchType}" />
