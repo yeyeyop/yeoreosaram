@@ -52,6 +52,9 @@ public interface HiBoardDao
    //게시물 삭제시, 답변 글 수 체크
    public int boardAnswersCount(long hiBbsSeq);
    
-   //게시물 답글조회
+   //게시물 답글 조회
    public List<HiBoard> boardReplyList(HiBoard hiBoard);
+   
+   //게시물 답글 삭제
+   public int boardReplyDelete(long hiBbsSeq);
 }

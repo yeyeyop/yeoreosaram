@@ -86,6 +86,59 @@ $(document).ready(function() {
          });
       }
    });
+   
+   $("#btnReplyDelete").on("click", function(){
+	      if(confirm("댓글을 삭제 하시겠습니까?") == true)
+	      {
+	         $.ajax({
+	            type : "POST",
+	            url : "/board/replyDelete",
+	            data : {
+	               hiBbsSeq : <c:out value="${hiBoard.hiBbsSeq}" />
+	            },
+	            datatype : "JSON",
+	            beforeSend : function(xhr){
+	                  xhr.setRequestHeader("AJAX", "true");
+	              },
+	            success : function(response) {
+	               // var data = JSON.parse(obj);
+
+	               if(response.code == 0)
+	               {
+	                  alert("댓글이 삭제되었습니다.");
+	                  location.reload = "/board/view";
+	                  setTimeout('location.reload()',1000); 
+	               }
+	               else if(response.code == 400)
+	               {
+	                  alert("파라미터 값이 올바르지 않습니다.");
+	               }
+	               else if(response.code == 404)
+	               {
+	                  alert("댓글을 찾을수 없습니다.");
+	                  location.href = "/board/view";
+	               }
+	               else if(response.code == -999)
+	                 {
+	                    alert("답변 게시물이 존재하여 삭제할 수 없습니다.");
+	                 }
+	               else
+	               {
+	                  alert("댓글 삭제중 오류가 발생하였습니다.");
+	               }   
+	            },
+	            complete : function(data) 
+	            {
+	               // 응답이 종료되면 실행, 잘 사용하지않는다
+	               icia.common.log(data);
+	            },
+	            error : function(xhr, status, error) 
+	            {
+	               icia.common.error(error);
+	            }
+	         });
+	      }
+	   });
    </c:if>
    </c:otherwise>
 </c:choose>   
@@ -152,6 +205,7 @@ $(document).ready(function() {
          </td>
          <td class="text-center"><c:out value="${hiBoard.userEmail}" /></td>
          <td class="text-center">${hiBoard.regDate}</td>
+          <td><button id="btnReplyDelete" class="btn btn-secondary">댓글 삭제</button></td>
       </tr>
      </c:if>
    </c:forEach>

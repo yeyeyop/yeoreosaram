@@ -436,40 +436,6 @@ public class HiBoardController
       
    }
    
-   //게시물 조회
-   @RequestMapping(value="/board/view3")
-   public String view3(ModelMap model, HttpServletRequest request, HttpServletResponse response)
-   {
-      String cookieUserId = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
-      long hiBbsSeq = HttpUtil.get(request, "hiBbsSeq", (long)0);
-      String searchType = HttpUtil.get(request, "searchType", "");
-      String searchValue = HttpUtil.get(request, "searchValue", "");
-      long curPage = HttpUtil.get(request, "curPage", (long)1);
-      //본인글 확인 여부
-      String boardMe = "N";
-      
-      HiBoard hiBoard = null;
-      
-      if(hiBbsSeq > 0)
-      {
-         hiBoard = hiBoardService.boardView(hiBbsSeq);
-         
-         if(hiBoard != null && StringUtil.equals(hiBoard.getUserId(), cookieUserId))
-         {
-            boardMe = "Y";   //본인글인 경우
-         }
-      }
-      model.addAttribute("hiBbsSeq", hiBbsSeq);
-      model.addAttribute("hiBoard", hiBoard);
-      model.addAttribute("boardMe", boardMe);
-      model.addAttribute("searchType", searchType);
-      model.addAttribute("searchValue", searchValue);
-      model.addAttribute("curPage", curPage);
-      
-      
-      return "/board/view3";
-   }
-   
    
    
    //게시물 조회
@@ -705,4 +671,68 @@ public class HiBoardController
       return "/board/list";
    }
 
+ //게시물 답변 삭제
+   @RequestMapping(value="/board/replyDelete", method=RequestMethod.POST)
+   @ResponseBody
+   public Response<Object> ReplyDelete(HttpServletRequest request, HttpServletResponse response)
+   {
+      String cookieUserId = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
+      long hiBbsSeq = HttpUtil.get(request, "hiBbsSeq", (long)0);         //View.jsp에서 ajax를 통해 hiBbsSeq를 요청
+      
+      Response<Object> ajaxResponse = new Response<Object>();
+      
+      if(hiBbsSeq > 0)
+      {
+         HiBoard parentHiBoard = hiBoardService.boardSelect(hiBbsSeq);
+         
+         if(parentHiBoard != null)
+         {
+            if(StringUtil.equals(parentHiBoard.getUserId(), cookieUserId))   //현재 로그인 한 아이디와 게시판에 등록되어있는 아이디가 같은지 확인
+            {
+               try
+               {
+                 
+                                                      
+                     if(hiBoardService.boardReplyDelete(parentHiBoard.getHiBbsSeq()) > 0)
+                     {
+                        ajaxResponse.setResponse(0, "Seccess");
+                     }
+                     else
+                     {
+                        ajaxResponse.setResponse(500, "Internal Server Error");
+                     }                  
+                  
+               }
+               catch(Exception e)
+               {
+                  logger.error("[HiBoardController] /board/replyDelete Exception", e);
+                  ajaxResponse.setResponse(500, "internal Server Error");
+               }
+            }
+            else
+            {
+               ajaxResponse.setResponse(400, "Not Found");
+            }
+         }
+         else
+         {
+            ajaxResponse.setResponse(400, "Not Found");
+         }
+      }
+      else
+      {
+         ajaxResponse.setResponse(400, "Bad Request");
+      }
+      
+      if(logger.isDebugEnabled())
+         {
+            logger.debug("[HiBoardController] /board/replyDelete response\n" + JsonUtil.toJsonPretty(ajaxResponse));
+         }
+      
+      return ajaxResponse;
+      
+      
+   }
+ 
+   
 }

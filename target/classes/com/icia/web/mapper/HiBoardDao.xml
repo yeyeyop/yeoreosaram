@@ -264,23 +264,6 @@ AND
 
 </select>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- 게시물 리스트 끝 -->
 
 <!-- 게시물 삭제시 답변글 수 체크 시작 -->
@@ -341,41 +324,7 @@ DELETE FROM TBL_HIBOARD_FILE
 <!-- 첨부 파일 삭제 끝 -->
 
 <!-- 첨부파일 끝 -->
-<!-- 댓글 시작 -->
-<!-- 댓글 등록 시작 -->
-<!-- 
-<insert id="boardReplyInsert" parameterType="com.icia.web.model.HiBoardReply">
-INSERT INTO TBL_HIBOARD_REPLY (
-HIBBS_SEQ,
-REPLY_SEQ,
-REPLYCONTENT,
-REPLYER,
-REG_DATE
-) VALUES (
-    #{hiBbsSeq},
-    1,
-    #{replyContent},
-    #{replyer},
-    SYSDATE
- )   
-</insert>
- -->    
-<!-- 댓글 등록 끝 -->
-<!-- 댓글 조회 시작 -->
-<!--
-<select id="boardReplySelect" parameterType="long" resultMap="hiBoardReplyResultMap">
-SELECT
-    HIBBS_SEQ,
-    REPLY_SEQ,
-    NVL(REPLYCONTENT, '') AS REPLYCONTENT,
-    NVL(REPLYER, '') AS REPLYER,
-    NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE
-FROM
-    TBL_HIBOARD_REPLY
-WHERE HIBBS_SEQ = #{value}
-  AND REPLY_SEQ = 1
-</select> -->
-<!-- 댓글 조회 끝 -->  
+
 <!-- 답변 리스트 시작 -->
 <select id="boardReplyList" parameterType="com.icia.web.model.HiBoard" resultMap="hiBoardResultMap">
  SELECT 
@@ -396,4 +345,12 @@ WHERE HIBBS_PARENT = #{hiBbsSeq}
 ORDER BY REG_DATE DESC
 </select>
 <!-- 답변 리스트 끝 -->
+<!-- 답변 삭제 시작 -->
+<delete id="boardReplyDelete" parameterType="long">
+DELETE FROM TBL_HIBOARD
+ WHERE HIBBS_GROUP = #{hiBbsSeq} 
+   AND HIBBS_INDENT = 1
+<!--     AND HIBBS_ORDER = #{hiBbsOrder}  -->
+</delete>
+<!-- 답변 삭제 끝 -->
 </mapper>

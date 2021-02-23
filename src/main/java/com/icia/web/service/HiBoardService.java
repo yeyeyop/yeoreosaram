@@ -286,4 +286,21 @@ public class HiBoardService
       
       return  replylist;
    }
+   
+   //게시물 답변 삭제(파일이 있는 경우 같이 삭제)
+   @Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+   public int boardReplyDelete(long hiBbsSeq) throws Exception
+   {
+      int count = 0;
+      
+      HiBoard parentHiBoard = boardView(hiBbsSeq);
+      
+      if(parentHiBoard != null)
+      {
+         count = hiBoardDao.boardReplyDelete(hiBbsSeq);
+        
+      }
+      
+      return count;
+   }
 }
