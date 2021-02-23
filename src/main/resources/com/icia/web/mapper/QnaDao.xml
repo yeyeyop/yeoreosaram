@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.web.dao.QnaDao">
+
+<!-- 게시물 resultMap 시작-->
+<resultMap id="qnaResultMap" type="com.icia.web.model.Qna">
+   <id column="QNA_HIBBS_SEQ" property="qnaHiBbsSeq" />
+   <result column="USER_ID" property="userId" />
+   <result column="USER_NAME" property="userName" />
+   <result column="USER_EMAIL" property="userEmail" />
+   <result column="QNA_HIBBS_GROUP" property="qnaHiBbsGroup" />
+   <result column="QNA_HIBBS_ORDER" property="qnaHiBbsOrder" />
+   <result column="QNA_HIBBS_INDENT" property="qnaHiBbsIndent" />
+    <result column="QNA_HIBBS_TITLE" property="qnaHiBbsTitle" />
+    <result column="QNA_HIBBS_CONTENT" property="qnaHiBbsContent" />
+    <result column="QNA_HIBBS_READ_CNT" property="qnaHiBbsReadCnt" />
+    <result column="REG_DATE" property="regDate" />
+    <result column="QNA_HIBBS_PARENT" property="qnaHiBbsParent" />
+</resultMap>
+<!-- 게시물 resultMap 끝-->
+
+<!-- 첨부파일 resultMap 시작 -->
+<resultMap id="qnaHiBoardFileResultMap" type="com.icia.web.model.QnaHiBoardFile">
+   <id column="QNA_HIBBS_SEQ" property="qnaHiBbsSeq" />
+   <id column="QNA_FILE_SEQ" property="qnaFileSeq" />
+   <result column="QNA_FILE_ORG_NAME" property="qnaFileOrgName" />
+   <result column="QNA_FILE_NAME" property="qnaFileName" />
+   <result column="QNA_FILE_EXT" property="qnaFileExt" />
+   <result column="QNA_FILE_SIZE" property="qnaFileSize" />
+   <result column="REG_DATE" property="regDate" />
+</resultMap>
+<!-- 첨부파일 resultMap 끝 -->
+
+<!-- 게시물 등록 시작 -->
+<insert id="qnaInsert" parameterType="com.icia.web.model.Qna">  <!--parameterType: INSERT할 때 #안에 들어갈 타입  -->
+<selectKey resultType="long" keyProperty="qnaHiBbsSeq" order="BEFORE">   <!-- BEFORE:아래 인서트 문 날리기 전에 얘부터 실행해 -->
+   SELECT SEQ_QNA_HIBOARD_SEQ.NEXTVAL FROM DUAL 
+</selectKey>
+INSERT INTO QNA_HIBOARD (
+    QNA_HIBBS_SEQ,
+    USER_ID,
+    QNA_HIBBS_GROUP,
+    QNA_HIBBS_ORDER,
+    QNA_HIBBS_INDENT,
+    QNA_HIBBS_TITLE,
+    QNA_HIBBS_CONTENT,
+    QNA_HIBBS_READ_CNT,
+    REG_DATE
+) VALUES (
+    #{qnaHiBbsSeq},
+    #{userId},
+    #{qnaHiBbsSeq},
+    #{qnaHiBbsOrder},
+    #{qnaHiBbsIndent},
+    #{qnaHiBbsTitle},
+    #{qnaHiBbsContent},
+    0,
+    SYSDATE
+)
+</insert>
+<!-- 게시물 등록 끝 -->
+
+<!-- 게시물 답글 등록 시작 -->
+<insert id="qnaReplyInsert" parameterType="com.icia.web.model.Qna">
+<selectKey resultType="long" keyProperty="qnaHiBbsSeq" order="BEFORE">
+   SELECT SEQ_QNA_HIBOARD_SEQ.NEXTVAL FROM DUAL 
+</selectKey>
+INSERT INTO QNA_HIBOARD (
+    QNA_HIBBS_SEQ,
+    USER_ID,
+    QNA_HIBBS_GROUP,
+    QNA_HIBBS_ORDER,
+    QNA_HIBBS_INDENT,
+    QNA_HIBBS_TITLE,
+    QNA_HIBBS_CONTENT,
+    QNA_HIBBS_READ_CNT,
+    REG_DATE,
+    QNA_HIBBS_PARENT
+) VALUES (
+    #{qnaHiBbsSeq},
+    #{userId},
+    #{qnaHiBbsGroup},
+    #{qnaHiBbsOrder},
+    #{qnaHiBbsIndent},
+    #{qnaHiBbsTitle},
+    #{qnaHiBbsContent},
+    0,
+    SYSDATE,
+    #{qnaHiBbsParent}
+)
+</insert>
+<!-- 게시물 답글 등록 끝 -->
+
+<!-- 게시물 조회 시작 -->
+<select id="qnaSelect" parameterType="long" resultMap="qnaResultMap">    <!-- 6번 줄의 id와 resultMap의 값이 같아야한다 -->
+SELECT
+    A.QNA_HIBBS_SEQ,
+    NVL(A.USER_ID, '') AS USER_ID,
+    NVL(B.USER_NAME, '') AS USER_NAME, 
+    NVL(B.USER_EMAIL, '') AS USER_EMAIL,
+    NVL(A.QNA_HIBBS_GROUP, 0) AS QNA_HIBBS_GROUP,
+    NVL(A.QNA_HIBBS_ORDER, 0) AS QNA_HIBBS_ORDER,
+    NVL(A.QNA_HIBBS_INDENT, 0) AS QNA_HIBBS_INDENT,
+    NVL(A.QNA_HIBBS_TITLE, '') AS QNA_HIBBS_TITLE,
+    NVL(A.QNA_HIBBS_CONTENT, '') AS QNA_HIBBS_CONTENT,
+    NVL(A.QNA_HIBBS_READ_CNT, 0) AS QNA_HIBBS_READ_CNT,
+    NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+    NVL(A.QNA_HIBBS_PARENT, 0) AS QNA_HIBBS_PARENT
+FROM
+    QNA_HIBOARD A, TBL_USER B
+WHERE 
+    A.QNA_HIBBS_SEQ = #{value}
+AND A.USER_ID = B.USER_ID
+</select>
+<!-- 게시물 조회 끝 -->
+
+<!-- 게시물 수정 시작 -->
+<update id="qnaUpdate" parameterType="com.icia.web.model.Qna">
+UPDATE QNA_HIBOARD 
+   SET QNA_HIBBS_TITLE = #{qnaHiBbsTitle},
+       QNA_HIBBS_CONTENT = #{qnaHiBbsContent}
+ WHERE QNA_HIBBS_SEQ = #{qnaHiBbsSeq}        
+</update>
+<!-- 게시물 수정 끝 -->
+
+<!-- 게시물에 HIBBS_GROUP의 HIBBS_ORDER 수정 시작 -->
+<update id="qnaGroupOrderUpdate" parameterType="com.icia.web.model.Qna">
+UPDATE QNA_HIBOARD
+   SET QNA_HIBBS_ORDER = QNA_HIBBS_ORDER + 1
+ WHERE QNA_HIBBS_GROUP = #{qnaHiBbsGroup}
+   AND QNA_HIBBS_ORDER <![CDATA[>=]]> #{qnaHiBbsOrder}       <!-- 나보다 오더번호가 큰 애를 찾는다 - 화면에 나오는 순서를 다시 정해준다 -->
+</update>
+<!-- 게시물에 HIBBS_GROUP의 HIBBS_ORDER 수정 끝 -->
+
+<!-- 게시물 조회수 증가 시작 -->
+<update id="qnaReadCntPlus" parameterType="long">
+UPDATE QNA_HIBOARD 
+   SET QNA_HIBBS_READ_CNT = QNA_HIBBS_READ_CNT + 1
+ WHERE QNA_HIBBS_SEQ = #{value}   
+</update>
+<!-- 게시물 조회수 증가 끝 -->
+
+<!-- 게시물 삭제 시작 -->
+<delete id="qnaDelete" parameterType="long">
+DELETE FROM QNA_HIBOARD
+ WHERE QNA_HIBBS_SEQ = #{value}
+</delete>
+<!-- 게시물 삭제 끝 -->
+
+<!-- 총 게시물 수 시작 -->
+<select id="qnaListCount" parameterType="com.icia.web.model.Qna" resultType="long">
+SELECT COUNT(A.QNA_HIBBS_SEQ) AS CNT
+  FROM QNA_HIBOARD A, TBL_USER B
+ WHERE A.USER_ID = B.USER_ID
+<if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
+   <choose>
+      <when test='searchType == "1"'>
+   AND B.USER_NAME LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test='searchType == "2"'>
+   AND A.QNA_HIBBS_TITLE LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test='searchType == "3"'>
+   AND DBMS_LOB.INSTR(A.QNA_HIBBS_CONTENT, #{searchValue}) > 0
+         </when>
+      </choose>
+</if>   
+</select>
+<!-- 총 게시물 수 끝 -->
+
+<!-- 게시물 리스트 시작 -->
+<select id="qnaList" parameterType="com.icia.web.model.Qna" resultMap="qnaResultMap">
+SELECT QNA_HIBBS_SEQ,
+       USER_ID,
+       USER_NAME,
+       USER_EMAIL,
+       QNA_HIBBS_GROUP,
+       QNA_HIBBS_ORDER,
+       QNA_HIBBS_INDENT,
+       QNA_HIBBS_TITLE,
+       QNA_HIBBS_CONTENT,
+       QNA_HIBBS_READ_CNT,
+       REG_DATE,
+       QNA_HIBBS_PARENT       
+FROM (  SELECT ROWNUM AS RNUM,
+               QNA_HIBBS_SEQ,
+               USER_ID,
+               USER_NAME,
+               USER_EMAIL,
+               QNA_HIBBS_GROUP,
+               QNA_HIBBS_ORDER,
+               QNA_HIBBS_INDENT,
+               QNA_HIBBS_TITLE,
+               QNA_HIBBS_CONTENT,
+               QNA_HIBBS_READ_CNT,
+               REG_DATE,
+               QNA_HIBBS_PARENT         
+        FROM (SELECT
+                    A.QNA_HIBBS_SEQ,
+                    NVL(A.USER_ID, '') AS USER_ID,
+                    NVL(B.USER_NAME, '') AS USER_NAME,
+                    NVL(B.USER_EMAIL, '') AS USER_EMAIL,
+                    NVL(A.QNA_HIBBS_GROUP, 0) AS QNA_HIBBS_GROUP,
+                    NVL(A.QNA_HIBBS_ORDER, 0) AS QNA_HIBBS_ORDER,
+                    NVL(A.QNA_HIBBS_INDENT, 0) AS QNA_HIBBS_INDENT,
+                    NVL(A.QNA_HIBBS_TITLE, '') AS QNA_HIBBS_TITLE,
+                    NVL(A.QNA_HIBBS_CONTENT, '') AS QNA_HIBBS_CONTENT,
+                    NVL(A.QNA_HIBBS_READ_CNT, 0) AS QNA_HIBBS_READ_CNT,
+                    NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+                    NVL(A.QNA_HIBBS_PARENT, 0) AS QNA_HIBBS_PARENT
+                FROM
+                    QNA_HIBOARD A, TBL_USER B
+                WHERE
+                    A.USER_ID = B.USER_ID
+<if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
+   <choose>   
+      <when test='searchType == "1"'>                 
+                AND B.USER_NAME LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test='searchType == "2"'>
+                AND A.QNA_HIBBS_TITLE LIKE '%' || #{searchValue} || '%'
+         </when>
+         <when test='searchType == "3"'>
+                AND DBMS_LOB.INSTR(A.QNA_HIBBS_CONTENT, #{searchValue}) > 0
+         </when>
+   </choose>
+</if>                   
+                ORDER BY A.QNA_HIBBS_GROUP DESC, A.QNA_HIBBS_ORDER ASC))
+WHERE 
+        RNUM <![CDATA[>=]]> #{startRow}      <!-- 비교연산자를 쓰게 되면 태그로 인식함 그래서 쿼리문에서의 비교연산자라고 알려주기위해 CDATA로 감쌈 -->
+AND
+        RNUM <![CDATA[<=]]> #{endRow}
+</select>
+<!-- 게시물 리스트 끝 -->
+
+<!-- 게시물 삭제시 답변글 수 체크 시작 -->
+<select id="qnaAnswersCount" parameterType="long" resultType="int">
+SELECT COUNT(QNA_HIBBS_SEQ) AS CNT
+  FROM QNA_HIBOARD
+ WHERE QNA_HIBBS_PARENT = #{value}
+</select>
+<!-- 게시물 삭제시 답변글 수 체크 끝 -->
+ 
+<!-- ############################################################ -->
+<!-- 첨부파일 시작 -->
+
+<!-- 첨부파일 등록 시작 -->
+<insert id="qnaHiBoardFileInsert" parameterType="com.icia.web.model.QnaHiBoardFile">
+INSERT INTO QNA_HIBOARD_FILE (
+    QNA_HIBBS_SEQ,
+    QNA_FILE_SEQ,
+    QNA_FILE_ORG_NAME,
+    QNA_FILE_NAME,
+    QNA_FILE_EXT,
+    QNA_FILE_SIZE,
+    REG_DATE
+) VALUES (
+    #{qnaHiBbsSeq},
+    1, <!-- 사실 여기 seq만 넣어도 됌 service에서 1을 넣어줬기 때문에 -->
+    #{qnaFileOrgName},
+    #{qnaFileName},
+    #{qnaFileExt},
+    #{qnaFileSize},
+    SYSDATE
+)
+</insert>
+<!-- 첨부파일 등록 끝 -->
+
+<!-- 첨부파일 조회 시작 -->
+<select id="qnaHiBoardFileSelect" parameterType="long" resultMap="qnaHiBoardFileResultMap">
+SELECT
+    QNA_HIBBS_SEQ,
+    QNA_FILE_SEQ,
+    NVL(QNA_FILE_ORG_NAME, '') AS QNA_FILE_ORG_NAME,
+    NVL(QNA_FILE_NAME, '') AS QNA_FILE_NAME,
+    NVL(QNA_FILE_EXT, '') AS QNA_FILE_EXT,
+    NVL(QNA_FILE_SIZE, 0) AS QNA_FILE_SIZE,
+    NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE
+FROM
+    QNA_HIBOARD_FILE
+WHERE QNA_HIBBS_SEQ = #{value}
+  AND QNA_FILE_SEQ = 1
+</select>  
+<!-- 첨부파일 조회 끝 -->
+
+<!-- 첨부 파일 삭제 시작 -->
+<delete id="qnaHiBoardFileDelete" parameterType="long">
+DELETE FROM QNA_HIBOARD_FILE
+ WHERE QNA_HIBBS_SEQ = #{value}
+</delete>
+<!-- 첨부 파일 삭제 끝 -->
+
+<!-- 첨부파일 끝 -->
+</mapper>
