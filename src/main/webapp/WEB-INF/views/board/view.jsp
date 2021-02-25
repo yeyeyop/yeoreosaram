@@ -87,8 +87,10 @@ $(document).ready(function() {
       }
    });
    
-   $("#btnReplyDelete").on("click", function(){
-	      if(confirm("댓글을 삭제 하시겠습니까?") == true)
+   $("#btnReplyDelete ").on("click", function(){
+	   
+	  // alert("저를 눌렀나용?");
+	       if(confirm("댓글을 삭제 하시겠습니까?") == true)
 	      {
 	         $.ajax({
 	            type : "POST",
@@ -137,7 +139,7 @@ $(document).ready(function() {
 	               icia.common.error(error);
 	            }
 	         });
-	      }
+	      } 
 	   });
    </c:if>
    </c:otherwise>
@@ -205,7 +207,7 @@ $(document).ready(function() {
          </td>
          <td class="text-center"><c:out value="${hiBoard.userEmail}" /></td>
          <td class="text-center">${hiBoard.regDate}</td>
-          <td><button id="btnReplyDelete" class="btn btn-secondary">댓글 삭제</button></td>
+          <td>${hiBoard.hiBbsSeq}<button id="btnReplyDelete" class="btn btn-secondary">댓글 삭제</button></td>
       </tr>
      </c:if>
    </c:forEach>

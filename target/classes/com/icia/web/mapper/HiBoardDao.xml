@@ -350,7 +350,7 @@ ORDER BY REG_DATE DESC
 DELETE FROM TBL_HIBOARD
  WHERE HIBBS_GROUP = #{hiBbsSeq} 
    AND HIBBS_INDENT = 1
-<!--     AND HIBBS_ORDER = #{hiBbsOrder}  -->
+<!--     AND HIBBS_ORDER = #{hiBbsOrder} -->
 </delete>
 <!-- 답변 삭제 끝 -->
 </mapper>

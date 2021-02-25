@@ -61,14 +61,21 @@
                <constructor-arg> <!-- 인증체크 제외 URL 설정 -->
                   <list>
                      <value>/index</value>
+                     <value>/admin/index</value>
                      <value>/mainHome</value>
+                     <value>/member/email</value>
+                     <value>/member/join_injeung</value>
+                     <value>/member/auth.do</value>
                      <value>/board/list</value>
                      <value>/board/view</value>
-                     <value>/user/login</value>
-                     <value>/user/loginOut</value>
-                     <value>/user/regForm</value>
-                     <value>/user/regProc</value>
-                     <value>/user/idCheck</value>
+                     <value>/user/login2</value>
+                     <value>/user/loginOut2</value>
+                     <value>/user/regForm2</value>
+                     <value>/user/regProc2</value>
+                     <value>/user/idCheck2</value>
+                     <value>/admin/login2</value>
+                     <value>/admin/loginOut2</value>
+                     
                   </list>
                </constructor-arg>
             </bean>
@@ -103,5 +110,20 @@
       <property name="maxUploadSize" value="#{env['upload.max.size']}" /><!-- 파일 업로드 용량제한 (바이트단위) -->
    </bean>
    <!-- 파일 업로드 설정 종료 -->
+       
+   <!-- Gmail -->
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <property name="host" value="smtp.gmail.com" />
+    <property name="port" value="587" />
+    <property name="username" value="chlgusrms96@gmail.com" />
+    <property name="password" value="wqcoitqfxynrxwak" />
+    <property name="javaMailProperties">
+    <props>
+      <prop key="mail.smtp.auth">true</prop>
+      <prop key="mail.smtp.starttls.enable">true</prop>
+    </props>
+    </property>
+  </bean>
+
        
 </beans>

@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib2.jsp" %>
 <!-- navigation -->
-<%@ include file="/WEB-INF/views/include/teamNavigation2.jsp" %>
-
 <!DOCTYPE html>
 <html>
-<head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
+<!-- navigation -->
+<%@ include file="/WEB-INF/views/include/teamNavigation2.jsp" %>
+
+<title>회원가입</title>
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -207,6 +208,8 @@ function fn_userReg()
          icia.common.error(error);
       }
    });
+   
+   
 }
 
 function fn_validateEmail(value)
@@ -215,8 +218,22 @@ function fn_validateEmail(value)
    
    return emailReg.test(value);
 }
+
+function emailCheck(){
+   
+   location.href = "/member/email.do";
+
+}
+
+
+function emailReturn(){
+   
+   alert("이메일 인증을 완료해주세요");
+   return;
+}
+
 </script>
-</head>
+
 <body>
 <div class="container">
     <div  class="form-group">
@@ -225,6 +242,17 @@ function fn_validateEmail(value)
     <div class="row mt-2">
         <div class="col-12">
             <form id="regForm2" method="post">
+            
+               <div class="form-group">
+                    <label for="userEmail2">이메일</label>
+                    <input type="text" class="form-control" id="userEmail2" name="userEmail2" placeholder="이메일 인증해주세요" maxlength="30" />
+                </div>
+                
+                <div class="form-group">
+                   <div class="btn-group">
+                      <button type="button" id="btnEmail" class="btn btn-outline-warning" onclick="emailCheck()">이메일 인증</button>
+                   </div>
+                </div>
                 <div class="form-group">
                     <label for="userId2">아이디</label>
                     <input type="text" class="form-control" id="userId2" name="userId2" placeholder="" maxlength="12" />
@@ -241,10 +269,8 @@ function fn_validateEmail(value)
                     <label for="userName2">이름</label>
                     <input type="text" class="form-control" id="userName2" name="userName2" placeholder="" maxlength="6" />
                 </div>
-                <div class="form-group">
-                    <label for="userEmail2">이메일</label>
-                    <input type="text" class="form-control" id="userEmail2" name="userEmail2" placeholder="" maxlength="30" />
-                </div>
+                
+                
                 <div class="form-group">
                     <label for="gender2">성별</label>
                     </br/>
@@ -258,11 +284,24 @@ function fn_validateEmail(value)
                 <input type="hidden" id="userPwd2" name="userPwd2" value="" />
                 
                 <!-- 등록부분 css 추가 -->
+                
+                <c:choose>
+                <c:when test="${e_mail ne null}">
                 <div class="form-group">
                    <div class="btn-group">
                       <button type="button" id="btnReg2" class="btn btn-outline-warning">등록</button>
                    </div>
                 </div>
+                </c:when>
+                
+                <c:when test="${e_mail eq null}">
+                <div class="form-group">
+                   <div class="btn-group">
+                      <a id="btnReturn" href="javascript:void(0)" class="btn btn-outline-warning" onclick="emailReturn()">이메일 인증을 완료해주세요</a>
+                   </div>
+                </div>
+                </c:when>
+                </c:choose>
             </form>
         </div>
     </div>

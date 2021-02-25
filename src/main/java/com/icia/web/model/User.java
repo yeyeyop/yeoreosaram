@@ -1,5 +1,5 @@
 /**
- * <pre>
+k * <pre>
  * 프로젝트명 : BasicBoard
  * 패키지명   : com.icia.web.model
  * 파일명     : User.java

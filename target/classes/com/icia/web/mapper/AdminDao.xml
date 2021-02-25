@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.web.dao.AdminDao">
+
+<resultMap type="com.icia.web.model.Admin" id="adminResultMap">
+   <id column="ADMIN_ID" property="adminId" />
+   <result column="ADMIN_PWD" property="adminPwd" />
+</resultMap>
+
+<select id="adminSelect" parameterType="string" resultMap="adminResultMap">
+SELECT 
+    ADMIN_ID, 
+    NVL(ADMIN_PWD, '') AS ADMIN_PWD
+FROM 
+    ADMIN
+WHERE 
+    ADMIN_ID = #{value} 
+</select>
+</mapper>

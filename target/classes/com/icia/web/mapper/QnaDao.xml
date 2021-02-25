@@ -15,7 +15,6 @@
     <result column="QNA_HIBBS_CONTENT" property="qnaHiBbsContent" />
     <result column="QNA_HIBBS_READ_CNT" property="qnaHiBbsReadCnt" />
     <result column="REG_DATE" property="regDate" />
-    <result column="QNA_HIBBS_PARENT" property="qnaHiBbsParent" />
 </resultMap>
 <!-- 게시물 resultMap 끝-->
 
@@ -32,8 +31,8 @@
 <!-- 첨부파일 resultMap 끝 -->
 
 <!-- 게시물 등록 시작 -->
-<insert id="qnaInsert" parameterType="com.icia.web.model.Qna">  <!--parameterType: INSERT할 때 #안에 들어갈 타입  -->
-<selectKey resultType="long" keyProperty="qnaHiBbsSeq" order="BEFORE">   <!-- BEFORE:아래 인서트 문 날리기 전에 얘부터 실행해 -->
+<insert id="qnaInsert" parameterType="com.icia.web.model.Qna">
+<selectKey resultType="long" keyProperty="qnaHiBbsSeq" order="BEFORE">
    SELECT SEQ_QNA_HIBOARD_SEQ.NEXTVAL FROM DUAL 
 </selectKey>
 INSERT INTO QNA_HIBOARD (
@@ -74,8 +73,7 @@ INSERT INTO QNA_HIBOARD (
     QNA_HIBBS_TITLE,
     QNA_HIBBS_CONTENT,
     QNA_HIBBS_READ_CNT,
-    REG_DATE,
-    QNA_HIBBS_PARENT
+    REG_DATE
 ) VALUES (
     #{qnaHiBbsSeq},
     #{userId},
@@ -85,32 +83,30 @@ INSERT INTO QNA_HIBOARD (
     #{qnaHiBbsTitle},
     #{qnaHiBbsContent},
     0,
-    SYSDATE,
-    #{qnaHiBbsParent}
+    SYSDATE
 )
 </insert>
 <!-- 게시물 답글 등록 끝 -->
 
 <!-- 게시물 조회 시작 -->
-<select id="qnaSelect" parameterType="long" resultMap="qnaResultMap">    <!-- 6번 줄의 id와 resultMap의 값이 같아야한다 -->
+<select id="qnaSelect" parameterType="long" resultMap="qnaResultMap">
 SELECT
     A.QNA_HIBBS_SEQ,
     NVL(A.USER_ID, '') AS USER_ID,
-    NVL(B.USER_NAME, '') AS USER_NAME, 
-    NVL(B.USER_EMAIL, '') AS USER_EMAIL,
+    NVL(B.USER_NAME2, '') AS USER_NAME, 
+    NVL(B.USER_EMAIL2, '') AS USER_EMAIL,
     NVL(A.QNA_HIBBS_GROUP, 0) AS QNA_HIBBS_GROUP,
     NVL(A.QNA_HIBBS_ORDER, 0) AS QNA_HIBBS_ORDER,
     NVL(A.QNA_HIBBS_INDENT, 0) AS QNA_HIBBS_INDENT,
     NVL(A.QNA_HIBBS_TITLE, '') AS QNA_HIBBS_TITLE,
     NVL(A.QNA_HIBBS_CONTENT, '') AS QNA_HIBBS_CONTENT,
     NVL(A.QNA_HIBBS_READ_CNT, 0) AS QNA_HIBBS_READ_CNT,
-    NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
-    NVL(A.QNA_HIBBS_PARENT, 0) AS QNA_HIBBS_PARENT
+    NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE
 FROM
-    QNA_HIBOARD A, TBL_USER B
+    QNA_HIBOARD A, TBL_USER2 B
 WHERE 
     A.QNA_HIBBS_SEQ = #{value}
-AND A.USER_ID = B.USER_ID
+AND A.USER_ID = B.USER_ID2
 </select>
 <!-- 게시물 조회 끝 -->
 
@@ -123,14 +119,14 @@ UPDATE QNA_HIBOARD
 </update>
 <!-- 게시물 수정 끝 -->
 
-<!-- 게시물에 HIBBS_GROUP의 HIBBS_ORDER 수정 시작 -->
+<!-- 게시물에 QNA_HIBBS_GROUP의 QNA_HIBBS_ORDER 수정 시작 -->
 <update id="qnaGroupOrderUpdate" parameterType="com.icia.web.model.Qna">
 UPDATE QNA_HIBOARD
    SET QNA_HIBBS_ORDER = QNA_HIBBS_ORDER + 1
  WHERE QNA_HIBBS_GROUP = #{qnaHiBbsGroup}
-   AND QNA_HIBBS_ORDER <![CDATA[>=]]> #{qnaHiBbsOrder}       <!-- 나보다 오더번호가 큰 애를 찾는다 - 화면에 나오는 순서를 다시 정해준다 -->
+   AND QNA_HIBBS_ORDER <![CDATA[>=]]> #{qnaHiBbsOrder}   
 </update>
-<!-- 게시물에 HIBBS_GROUP의 HIBBS_ORDER 수정 끝 -->
+<!-- 게시물에 QNA_HIBBS_GROUP의 QNA_HIBBS_ORDER 수정 끝 -->
 
 <!-- 게시물 조회수 증가 시작 -->
 <update id="qnaReadCntPlus" parameterType="long">
@@ -150,12 +146,12 @@ DELETE FROM QNA_HIBOARD
 <!-- 총 게시물 수 시작 -->
 <select id="qnaListCount" parameterType="com.icia.web.model.Qna" resultType="long">
 SELECT COUNT(A.QNA_HIBBS_SEQ) AS CNT
-  FROM QNA_HIBOARD A, TBL_USER B
- WHERE A.USER_ID = B.USER_ID
+  FROM QNA_HIBOARD A, TBL_USER2 B
+ WHERE A.USER_ID = B.USER_ID2
 <if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
    <choose>
       <when test='searchType == "1"'>
-   AND B.USER_NAME LIKE '%' || #{searchValue} || '%'
+   AND B.USER_NAME2 LIKE '%' || #{searchValue} || '%'
          </when>
          <when test='searchType == "2"'>
    AND A.QNA_HIBBS_TITLE LIKE '%' || #{searchValue} || '%'
@@ -180,8 +176,7 @@ SELECT QNA_HIBBS_SEQ,
        QNA_HIBBS_TITLE,
        QNA_HIBBS_CONTENT,
        QNA_HIBBS_READ_CNT,
-       REG_DATE,
-       QNA_HIBBS_PARENT       
+       REG_DATE       
 FROM (  SELECT ROWNUM AS RNUM,
                QNA_HIBBS_SEQ,
                USER_ID,
@@ -193,29 +188,27 @@ FROM (  SELECT ROWNUM AS RNUM,
                QNA_HIBBS_TITLE,
                QNA_HIBBS_CONTENT,
                QNA_HIBBS_READ_CNT,
-               REG_DATE,
-               QNA_HIBBS_PARENT         
+               REG_DATE       
         FROM (SELECT
                     A.QNA_HIBBS_SEQ,
                     NVL(A.USER_ID, '') AS USER_ID,
-                    NVL(B.USER_NAME, '') AS USER_NAME,
-                    NVL(B.USER_EMAIL, '') AS USER_EMAIL,
+                    NVL(B.USER_NAME2, '') AS USER_NAME,
+                    NVL(B.USER_EMAIL2, '') AS USER_EMAIL,
                     NVL(A.QNA_HIBBS_GROUP, 0) AS QNA_HIBBS_GROUP,
                     NVL(A.QNA_HIBBS_ORDER, 0) AS QNA_HIBBS_ORDER,
                     NVL(A.QNA_HIBBS_INDENT, 0) AS QNA_HIBBS_INDENT,
                     NVL(A.QNA_HIBBS_TITLE, '') AS QNA_HIBBS_TITLE,
                     NVL(A.QNA_HIBBS_CONTENT, '') AS QNA_HIBBS_CONTENT,
                     NVL(A.QNA_HIBBS_READ_CNT, 0) AS QNA_HIBBS_READ_CNT,
-                    NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
-                    NVL(A.QNA_HIBBS_PARENT, 0) AS QNA_HIBBS_PARENT
+                    NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE
                 FROM
-                    QNA_HIBOARD A, TBL_USER B
+                    QNA_HIBOARD A, TBL_USER2 B
                 WHERE
-                    A.USER_ID = B.USER_ID
+                    A.USER_ID = B.USER_ID2
 <if test='searchType != null and searchType != "" and searchValue != null and searchValue != ""'>
    <choose>   
       <when test='searchType == "1"'>                 
-                AND B.USER_NAME LIKE '%' || #{searchValue} || '%'
+                AND B.USER_NAME2 LIKE '%' || #{searchValue} || '%'
          </when>
          <when test='searchType == "2"'>
                 AND A.QNA_HIBBS_TITLE LIKE '%' || #{searchValue} || '%'
@@ -227,20 +220,12 @@ FROM (  SELECT ROWNUM AS RNUM,
 </if>                   
                 ORDER BY A.QNA_HIBBS_GROUP DESC, A.QNA_HIBBS_ORDER ASC))
 WHERE 
-        RNUM <![CDATA[>=]]> #{startRow}      <!-- 비교연산자를 쓰게 되면 태그로 인식함 그래서 쿼리문에서의 비교연산자라고 알려주기위해 CDATA로 감쌈 -->
+        RNUM <![CDATA[>=]]> #{startRow}
 AND
         RNUM <![CDATA[<=]]> #{endRow}
 </select>
 <!-- 게시물 리스트 끝 -->
 
-<!-- 게시물 삭제시 답변글 수 체크 시작 -->
-<select id="qnaAnswersCount" parameterType="long" resultType="int">
-SELECT COUNT(QNA_HIBBS_SEQ) AS CNT
-  FROM QNA_HIBOARD
- WHERE QNA_HIBBS_PARENT = #{value}
-</select>
-<!-- 게시물 삭제시 답변글 수 체크 끝 -->
- 
 <!-- ############################################################ -->
 <!-- 첨부파일 시작 -->
 
@@ -256,7 +241,7 @@ INSERT INTO QNA_HIBOARD_FILE (
     REG_DATE
 ) VALUES (
     #{qnaHiBbsSeq},
-    1, <!-- 사실 여기 seq만 넣어도 됌 service에서 1을 넣어줬기 때문에 -->
+    1,
     #{qnaFileOrgName},
     #{qnaFileName},
     #{qnaFileExt},
@@ -289,6 +274,35 @@ DELETE FROM QNA_HIBOARD_FILE
  WHERE QNA_HIBBS_SEQ = #{value}
 </delete>
 <!-- 첨부 파일 삭제 끝 -->
+
+<!-- 게시물 삭제시 답변글 수 체크 시작 -->
+<select id="qnaAnswersCount" parameterType="long" resultType="int">
+SELECT COUNT(QNA_HIBBS_SEQ) AS CNT
+FROM QNA_HIBOARD
+WHERE QNA_HIBBS_PARENT = #{value}
+</select>
+<!-- 게시물 삭제시 답변글 수 체크 끝 -->
+
+<!-- 답변 리스트 시작 -->
+<select id="qnaReplyList" parameterType="com.icia.web.model.Qna" resultMap="qnaResultMap">
+ SELECT 
+ QNA_HIBBS_SEQ,
+       NVL(A.USER_ID, '') AS USER_ID,
+       NVL(B.USER_EMAIL2, '') AS USER_EMAIL2,
+       NVL(A.QNA_HIBBS_GROUP, '') AS QNA_HIBBS_GROUP,
+       NVL(A.QNA_HIBBS_ORDER, '') AS QNA_HIBBS_ORDER,
+       NVL(A.QNA_HIBBS_INDENT, '') AS QNA_HIBBS_INDENT,
+       NVL(A.QNA_HIBBS_TITLE, '') AS QNA_HIBBS_TITLE,
+       NVL(A.QNA_HIBBS_CONTENT, '') AS QNA_HIBBS_CONTENT,
+       NVL(A.QNA_HIBBS_READ_CNT, '') AS QNA_HIBBS_READ_CNT,
+       NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+       NVL(A.QNA_HIBBS_PARENT, '') AS QNA_HIBBS_PARENT
+FROM QNA_HIBOARD A, TBL_USER2 B
+WHERE QNA_HIBBS_PARENT = #{qnaHiBbsSeq}
+  AND A.USER_ID = B.USER_ID2
+  ORDER BY A.REG_DATE DESC
+</select>
+<!-- 답변 리스트 끝 -->
 
 <!-- 첨부파일 끝 -->
 </mapper>

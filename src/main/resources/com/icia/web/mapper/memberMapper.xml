@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<!-- 회원가입 -->
+<mapper namespace="com.icia.web.dao.MemberDAO">
+    
+    <!-- 회원가입 mapper -->
+    <insert id="insertUser" parameterType="hashMap">
+    insert into member (USER_ID, MEMBER_PASS, E_MAIL)
+    values (#{user_id}, #{member_pass}, #{e_mail})
+    </insert>
+    
+    
+    <!-- 로그인 관련 mapper-->
+    <select id = "login_check" parameterType=
+    "com.icia.web.model.MemberDTO"
+    resultType="String">
+        select user_id from member
+        where user_id=#{user_id} and member_pass=#{member_pass}
+    </select>    
+    
+    
+    <!-- 아이디 찾기 관련 mapper -->
+    <select id = "find_id_check" parameterType=
+    "com.icia.web.model.MemberDTO"
+    resultType="String">
+        select user_id from member
+        where e_mail=#{e_mail}
+    </select>
+    
+    <!-- 비밀번호 찾기 관련 mapper -->
+    <select id = "find_pass_check" parameterType=
+    "com.icia.web.model.MemberDTO"
+    resultType="String">
+        select member_pass from member
+        where user_id=#{user_id} and e_mail=#{e_mail}
+    </select>
+    
+    
+    <!-- 소셜 로그인 관련 mapper -->
+    <!-- 소셜 로그인 한 후에 회원 인증 버튼을 누르면 소셜 로그인 api에서 받아온 정보를 데이터 베이스의 member테이블에 저장하도록 하는 쿼리 -->
+    <insert id="authentication" parameterType="com.icia.web.model.MemberDTO">
+    insert into member (USER_ID, MEMBER_PASS, E_MAIL)
+    values (#{user_id}, 0, #{e_mail})
+    </insert>
+    
+    
+    <!-- 비밀번호 변경 관련 mapper -->
+    <update id = "pass_change" parameterType="hashMap">
+    update member set member_pass=#{member_pass} where e_mail=#{e_mail}
+    </update>
+    
+    
+    <!-- 이메일 중복확인 관련 mapper-->
+    <select id = "email_check" resultType="String">
+        select e_mail from member
+        where e_mail=#{e_mail}
+    </select>
+    
+    
+    <!-- 아이디 중복확인 관련 mapper-->
+    <select id = "join_id_check" resultType="String">
+        select user_id from member
+        where user_id=#{user_id}
+    </select>        
+    
+    
+    <!-- 회원 프로필 확인 mapper -->
+    <select id = "member_profile" resultType="com.icia.web.model.MemberDTO">
+    select user_id, e_mail, join_date
+    from member
+    where user_id=#{user_id}
+    </select>
+    
+    
+</mapper>

@@ -298,7 +298,7 @@ public class HiBoardService
       if(parentHiBoard != null)
       {
          count = hiBoardDao.boardReplyDelete(hiBbsSeq);
-        
+         logger.debug("[서비스] 댓글 삭제 게시물 번호는 (아마 원래 본글 일꺼야!!) : "+ hiBbsSeq);
       }
       
       return count;

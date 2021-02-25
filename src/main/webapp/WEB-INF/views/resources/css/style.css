@@ -11,10 +11,11 @@
 body {
   font-family: "Inconsolata", monospace;
   color: #939597;
+  padding-bottom: 40px;
 }
 
 a {
-  color: #777;
+  color: #939597;
 }
 
 a:hover {
@@ -344,6 +345,10 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 .custom-navmenu {
   background: #F5dF4D;
 }
+/*관리자페이지 nav*/
+.admin-navmenu {
+  background: #939597;
+}
 
 .custom-navmenu .custom-menu, .custom-navmenu .custom-menu li {
   padding: 0;
@@ -501,4 +506,117 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 .social a:hover {
   color: #000;
+}
+
+
+/*네비게이션패딩  */
+.container {
+margin: 50px auto;
+}
+
+/*index styleseet(로그인창/회원가입창)*/
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 50px auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="text"] {
+  margin-top: 20px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  
+  boder: none;
+  border-bottom: 1px solid #939597;
+  background-color: transparent;
+  transition: top .5s ease;
+}
+.form-signin input[type="password"] {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  
+  boder: none;
+  border-bottom: 1px solid #939597;
+  background-color: transparent;
+  transition: top .5s ease;
+}
+.form-signin input[type="radio"] {
+  margin-top: 20px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  
+  boder: none;
+  border-bottom: 1px solid #939597;
+  background-color: transparent;
+  transition: top .5s ease;
+}
+#btnLogin {
+	width: 100%; height: 50px;
+	margin-top: 30px;
+	background: #F5dF4D;
+	color: #939597;
+	font-size: 20px;
+	border: none;
+	border-radius: 25px;
+}
+#btnAdmin {
+	width: 100%; height: 50px;
+	margin-top: 30px;
+	background: #939597;
+	color: #F5dF4D;
+	font-size: 20px;
+	border: none;
+	border-radius: 25px;
+}
+.caption {
+	margin-top: 20px;
+	text-align: center;
+}
+.caption a {
+	font-size: 15px; color: #939597;
+}
+#keepLogin {
+	margin-top: 20px;
+	text-align: center;
+	font-size: 15px; color: #939597;
+}
+
+/*regForm2 styleseet (회원가입창)*/
+/* .form-group {
+max-width: 330px;
+padding: 15px;
+margin: auto;
+} */
+.btn-group button{ 
+border: 1px solid #F5dF4D; background-color: #F5dF4D; color:#939597; padding: auto;
+margin: 0 auto; text-align: center;
+} 
+.btn-group button:hover{ color:white; background-color: #F5dF4D; }
+
+#btnEmail {
+	margin: auto;
+	width: 50%;
+	padding: 5px;
+	width: 100%;
+   font-size: 18px;
 }
