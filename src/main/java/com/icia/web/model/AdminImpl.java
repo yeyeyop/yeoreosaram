@@ -32,7 +32,7 @@ public class AdminImpl implements AdminDao{
    }
    
    @Override
-   public void deleteAdmin(String userId) {
+   public int userDelete(String userId2) {
       
    }
 

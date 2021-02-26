@@ -5,7 +5,7 @@
 <resultMap type="com.icia.web.model.Admin" id="adminResultMap">
    <id column="ADMIN_ID" property="adminId" />
    <result column="ADMIN_PWD" property="adminPwd" />
-      <result column="USER_ID2" property="userId2" />
+   <result column="USER_ID2" property="userId2" />
    <result column="USER_PWD2" property="userPwd2" />
    <result column="USER_NAME2" property="userName2" />
    <result column="USER_EMAIL2" property="userEmail2" />
@@ -20,6 +20,7 @@ FROM
 WHERE 
     ADMIN_ID = #{value} 
 </select>
+
 <!-- 유저리스트 -->
 <select id ="adminList" resultType="com.icia.web.model.Admin">
 SELECT
@@ -32,4 +33,11 @@ FROM
 ORDER BY userName2
 </select>
 <!-- 유저 리스트 끝 -->
+
+<!-- 회원관리 삭제 시작 -->
+<delete id="userDelete" parameterType="string">
+DELETE FROM TBL_USER2
+ WHERE USER_ID2 = #{value}
+</delete>
+<!-- 회원관리 삭제 끝 -->
 </mapper>

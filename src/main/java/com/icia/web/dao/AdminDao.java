@@ -25,6 +25,6 @@ public interface AdminDao {
 	public Admin viewAdmin();
 	
 	//회원 삭제
-	public void deleteAdmin(String userId);
+	public int userDelete(String userId2);
 
 }

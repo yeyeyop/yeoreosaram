@@ -22,8 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.icia.common.util.StringUtil;
+import com.icia.web.model.Admin;
 import com.icia.web.model.Response;
 import com.icia.web.model.User2;
+import com.icia.web.service.AdminService;
 import com.icia.web.service.UserService2;
 import com.icia.web.util.CookieUtil;
 import com.icia.web.util.HttpUtil;
@@ -49,6 +51,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter
 	
 	@Autowired
 	private UserService2 userService2;
+	
+	@Autowired
+	private AdminService adminService;
 	
 	// 인증체크 안해도 되는 url 리스트
 	private List<String> authExcludeUrlList;
@@ -155,6 +160,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter
 			if(CookieUtil.getCookie(request, AUTH_COOKIE_NAME) != null)
 			{
 				String cookieUserId = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
+				String cookieAdminId = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
+				
 				
 				if(!StringUtil.isEmpty(cookieUserId))
 				{
@@ -166,8 +173,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter
 					if(!StringUtil.isEmpty(cookieUserId))
 					{
 						User2 user2 = userService2.userSelect2(cookieUserId);
+						Admin admin = adminService.adminSelect(cookieAdminId);
 						
 						if(user2 != null && StringUtil.equals(user2.getStatus2(), "Y"))
+						{
+							bFlag = true;
+						}
+						else if(admin != null)
 						{
 							bFlag = true;
 						}

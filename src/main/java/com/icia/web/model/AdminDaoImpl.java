@@ -30,9 +30,10 @@ public class AdminDaoImpl implements AdminDao{
    }
    
    @Override
-   public void deleteAdmin(String userId) {
-      
+   public int userDelete(String userId2) {
+      return null;
    }
+   
 @Override
 public Admin adminSelect(String adminId) {
 	// TODO Auto-generated method stub
