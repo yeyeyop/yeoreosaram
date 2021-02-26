@@ -1,5 +1,8 @@
 package com.icia.web.controller;
 
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,12 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.icia.common.util.StringUtil;
 import com.icia.web.model.Response;
+import com.icia.web.dao.AdminDao;
 import com.icia.web.model.Admin;
 import com.icia.web.service.AdminService;
 import com.icia.web.util.CookieUtil;
@@ -95,7 +101,7 @@ public class AdminController
    }//logOut
    
    //admin/index 이 페이지로 가기 위한 메서드
-   @RequestMapping(value="admin/index", method=RequestMethod.GET)
+   @RequestMapping(value="/admin/index", method=RequestMethod.GET)
    public String index(HttpServletRequest request, HttpServletResponse response)
    {
       if(CookieUtil.getCookie(request, AUTH_COOKIE_NAME) != null)
@@ -105,13 +111,39 @@ public class AdminController
       return "/admin/index";
    }
    
-	
-		//AdminHome
-		@RequestMapping(value = "/admin/adminHome", method=RequestMethod.GET)
-		public String mainHome(HttpServletRequest request, HttpServletResponse response)
-		{
-			return "/admin/adminHome";
-		}
-
+   //AdminHome
+   @RequestMapping(value = "/admin/adminHome", method=RequestMethod.GET)
+   public String mainHome(HttpServletRequest request, HttpServletResponse response)
+   {
+      return "/admin/adminHome";
+   }
+   
+   //회원 리스트
+   @Inject
+   AdminDao adminDao;
+   
+   @RequestMapping(value = "admin/adminList")//, method = RequestMethod.GET)
+   public String user2List (Model model) {
+      List<Admin> list = adminDao.adminList();
+      model.addAttribute("list", list);
+      
+      return "/admin/adminList";
+   }
+   
+   ////////////////////////////////
+   //회원정보 상세조회
+   /*@RequestMapping("admin/admin2View")
+   public String adminUpdate(@RequestParam String userId2, Model model) {
+      model.addAttribute("dto?", adminDao.viewAdmin2(userId2));
+      
+      logger.info("클릭한 아이디 : " + userId2);
+      return "/admin/admin2View";
+   }
+   
+   //회원 강제탈퇴
+   @RequestMapping("admin/delete")
+   public String adminDelete(@RequestParam String userId2, @RequestParam String userPwd2, Model model) {
+      return "/admin/admin2List";
+   }*/
    
 }

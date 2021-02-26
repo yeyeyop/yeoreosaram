@@ -5,6 +5,10 @@
 <resultMap type="com.icia.web.model.Admin" id="adminResultMap">
    <id column="ADMIN_ID" property="adminId" />
    <result column="ADMIN_PWD" property="adminPwd" />
+      <result column="USER_ID2" property="userId2" />
+   <result column="USER_PWD2" property="userPwd2" />
+   <result column="USER_NAME2" property="userName2" />
+   <result column="USER_EMAIL2" property="userEmail2" />
 </resultMap>
 
 <select id="adminSelect" parameterType="string" resultMap="adminResultMap">
@@ -16,4 +20,16 @@ FROM
 WHERE 
     ADMIN_ID = #{value} 
 </select>
+<!-- 유저리스트 -->
+<select id ="adminList" resultType="com.icia.web.model.Admin">
+SELECT
+   USER_ID2 AS userId2,
+    USER_PWD2 AS userPwd2,
+    USER_NAME2 AS userName2,
+    USER_EMAIL2 AS userEmail2
+FROM    
+   TBL_USER2
+ORDER BY userName2
+</select>
+<!-- 유저 리스트 끝 -->
 </mapper>

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib2.jsp" %>
 <!DOCTYPE html>
 <html>
-<head>
+
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <!-- navigation -->
 <%@ include file="/WEB-INF/views/include/teamNavigation2.jsp" %>
@@ -121,80 +121,18 @@ function fn_loginCheck()
          icia.common.error(error);
       }
    });
-   
-   $.ajax({               <!-- 클라이언트와 서버간에 XML 데이터를 주고받는 기술 -->
-   type : "POST",
-   url : "/admin/login2",
-   data : {
-      adminId: $("#adminId").val(),
-      adminPwd: $("#adminPwd").val() 
-   },
-   datatype : "JSON",
-   beforeSend : function(xhr){
-         xhr.setRequestHeader("AJAX", "true");
-     },
-   success : function(response) {
-      
-      if(!icia.common.isEmpty(response))
-      {
-         icia.common.log(response);
-         
-         // var data = JSON.parse(obj);
-         var code = icia.common.objectValue(response, "code", -500);
-         
-         if(code == 0)
-         {
-            location.href = "/"; //관리자페이지?
-         }
-         else
-         {
-            if(code == -1)
-            {
-               alert("비밀번호가 올바르지 않습니다.");
-               $("#adminPwd").focus();
-            }
-            else if(code == 404)
-            {
-               alert("아이디와 일치하는 사용자 정보가 없습니다.");
-               $("#adminId").focus();
-            }
-            else if(code == 400)
-            {
-               alert("파라미터 값이 올바르지 않습니다.");
-               $("#adminId").focus();
-            }
-            else
-            {
-               alert("오류가 발생하였습니다.");
-               $("#adminId").focus();
-            }   
-         }   
-      }
-      else
-      {
-         alert("오류가 발생하였습니다.");
-         $("#adminId").focus();
-      }
-   },
-   complete : function(data) 
-   { 
-      // 응답이 종료되면 실행, 잘 사용하지않는다
-      icia.common.log(data);
-   },
-   error : function(xhr, status, error) 
-   {
-      icia.common.error(error);
-   }
-});
+
 }
 </script>
-</head>
+
 <body>
 <div class="container">
    <form class="form-signin">
        <h2 class="form-signin-heading m-b3">로그인</h2>
+       
       <label for="userId2" class="sr-only">아이디</label>
       <input type="text" id="userId2" name="userId2" class="form-control" maxlength="20" placeholder="아이디">
+      
       <label for="userPwd2" class="sr-only">비밀번호</label>
       <input type="password" id="userPwd2" name="userPwd2" class="form-control" maxlength="20" placeholder="비밀번호">
         

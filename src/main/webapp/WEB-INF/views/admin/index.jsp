@@ -78,6 +78,7 @@ function fn_loginCheck()
          
          if(code == 0)
          {
+        	 alert("로그인 완료");
             location.href = "/admin/adminHome"; //관리자페이지?
          }
          else
