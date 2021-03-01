@@ -289,7 +289,7 @@ public class HiBoardService
    
    //게시물 답변 삭제(파일이 있는 경우 같이 삭제)
    @Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-   public int boardReplyDelete(long hiBbsSeq) throws Exception
+   public int boardReplyDelete(long hiBbsSeq, long hiBbsOrder) throws Exception
    {
       int count = 0;
       
@@ -297,8 +297,9 @@ public class HiBoardService
       
       if(parentHiBoard != null)
       {
-         count = hiBoardDao.boardReplyDelete(hiBbsSeq);
+         count = hiBoardDao.boardReplyDelete(parentHiBoard);
          logger.debug("[서비스] 댓글 삭제 게시물 번호는 (아마 원래 본글 일꺼야!!) : "+ hiBbsSeq);
+         logger.debug("[댓글 순서 order 번호] : "+ hiBbsOrder);
       }
       
       return count;

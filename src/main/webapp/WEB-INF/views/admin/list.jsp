@@ -31,7 +31,7 @@ $(document).ready(function() {
 function fn_view(bbsSeq)
 {
    document.bbsForm.hiBbsSeq.value = bbsSeq;
-   document.bbsForm.action = "/board/view";
+   document.bbsForm.action = "/admin/view";
    document.bbsForm.submit();
 }
 
@@ -84,26 +84,29 @@ function popup(){
       </tr>
       </thead>
       <tbody>
+
 <c:if test="${!empty list}">   
-   <c:forEach var="hiBoard" items="${list}" varStatus="status">  
-         <c:if test="${hiBoard.hiBbsIndent == 0}"> 
+   <c:forEach var="admin" items="${list}" varStatus="status">  
+         <c:if test="${admin.hiBbsIndent == 0}"> 
       <tr>
-         <td class="text-center">${hiBoard.hiBbsSeq}</td>
+         <td class="text-center">${admin.hiBbsSeq}</td>
          <td>
-            <a href="javascript:void(0)" onclick="fn_view(${hiBoard.hiBbsSeq})">
+            <a href="javascript:void(0)" onclick="fn_view(${admin.hiBbsSeq})">
 
 
 
-               <c:out value="${hiBoard.hiBbsTitle}" />
+               <c:out value="${admin.hiBbsTitle}" />
             </a>
          </td>
-         <td class="text-center"><c:out value="${hiBoard.userName}" /></td>
-         <td class="text-center">${hiBoard.regDate}</td>
-         <td class="text-center"><fmt:formatNumber type="number" maxFractionDigits="3" value="${hiBoard.hiBbsReadCnt}" /></td>
+         <td class="text-center"><c:out value="${admin.userName2}" /></td>
+         <td class="text-center">${admin.regDate}</td>
+         <td class="text-center"><fmt:formatNumber type="number" maxFractionDigits="3" value="${admin.hiBbsReadCnt}" /></td>
       </tr>
             </c:if>
    </c:forEach>
 </c:if>
+
+
       </tbody>
       <tfoot>
       <tr>

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.icia.common.util.StringUtil;
 import com.icia.web.model.Response;
@@ -138,22 +139,7 @@ public class AdminController
       
       return "/admin/adminList";
    }
-   
-   ////////////////////////////////
-   //회원정보 상세조회
-   /*@RequestMapping("admin/admin2View")
-   public String adminUpdate(@RequestParam String userId2, Model model) {
-      model.addAttribute("dto?", adminDao.viewAdmin2(userId2));
-      
-      logger.info("클릭한 아이디 : " + userId2);
-      return "/admin/admin2View";
-   } */
-   
-   //회원 강제탈퇴
-   @RequestMapping("admin/delete")
-   public String adminDelete(@RequestParam String userId2, @RequestParam String userPwd2, Model model) {
-      return "/admin/adminList";
-   }
+  
    /*원본
    @RequestMapping(value="/admin/list", method=RequestMethod.GET)
    public String view(HttpServletRequest request, HttpServletResponse response)
@@ -166,160 +152,156 @@ public class AdminController
    }*/
    
    @RequestMapping(value="/admin/list")
-   public String view(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+   public String list(ModelMap model, HttpServletRequest request, HttpServletResponse response)
    {
-      if(CookieUtil.getCookie(request, AUTH_COOKIE_NAME) != null)
-      {
-          CookieUtil.deleteCookie(request, response, "/", AUTH_COOKIE_NAME);
+      //if(CookieUtil.getCookie(request, AUTH_COOKIE_NAME) != null)
+     // {
+          //CookieUtil.deleteCookie(request, response, "/", AUTH_COOKIE_NAME);
+        
+        //게시물 리스트
           
-        //조회항목(1:작성자조회, 2:제목조회, 3:내용조회)
-          // String searchType = HttpUtil.get(request, "searchType");
-           String searchType = "";
-           //조회값
-           //String searchValue = HttpUtil.get(request, "searchValue");
-           String searchValue = "";
-           //현재 페이지
-           long curPage = HttpUtil.get(request, "curPage", (long)1);
-           //총 게시물 수
-           long totalCount = 0;
-           //게시물 리스트
-           List<HiBoard> list = null;
-           //페이징 객체
-           Paging paging = null;
-           //조회객체
-           HiBoard search = new HiBoard();
-           
-           /*
-           if(!StringUtil.isEmpty(searchType) && !StringUtil.isEmpty(searchValue))
-           {
-              search.setSearchType(searchType);
-              search.setSearchValue(searchValue);
-           }
-           else
-           {
-              searchType = "";
-              searchValue = "";
-           }*/
-           
-           totalCount = hiBoardService.boardListCount2(search);
-           
-           logger.debug("totalCount : " + totalCount);
-           logger.debug("curPage : " + curPage);
-           
-           if(totalCount > 0)
-           {
-              paging = new Paging("/admin/list", totalCount, LIST_COUNT, PAGE_COUNT, curPage, "curPage");
-              
-              paging.addParam("searchType", searchType);
-              paging.addParam("searchValue", searchValue);
-              paging.addParam("curPage", curPage);
-              
-              search.setStartRow(paging.getStartRow());
-              search.setEndRow(paging.getEndRow());
-              
-              list = hiBoardService.boardList(search);
-           }
-           
+	      Admin admin = new Admin();
+	   
+          List<Admin> list = adminDao.testList(admin);
+          
            model.addAttribute("list", list);
-           model.addAttribute("searchType", searchType);
-           model.addAttribute("searchValue", searchValue);
-           model.addAttribute("curPage", curPage);
-           model.addAttribute("paging", paging);
-          
-      }
+           
+     // }
       
-    
       return "/admin/list";
    }
+   /*
+   @RequestMapping(value="/admin/view")
+   public String view(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+   {
+      //if(CookieUtil.getCookie(request, AUTH_COOKIE_NAME) != null)
+     // {
+          //CookieUtil.deleteCookie(request, response, "/", AUTH_COOKIE_NAME);
+        
+        //게시물 리스트
+          
+	      Admin admin = new Admin();
+	      long hiBbsSeq = HttpUtil.get(request, "hiBbsSeq", (long)0);
+	        
+          
+           if(hiBbsSeq > 0)
+           {
+        	   logger.debug("===== 게시물 번호 [" + hiBbsSeq + "]==============================");
+             admin = adminService.adminView(hiBbsSeq);
+             //System.out.println("게시물 아이디 는"+admin.getAdminId());
+       
+           }else {
+        	   logger.debug("===== 게시물 보기 오류==============================");
+           }
+           
+           
+           
+           model.addAttribute("hiBbsSeq", hiBbsSeq);
+           
+           
+     // }
+      
+      return "/admin/view";
+   }*/
    
- /*관리자용 게시물 조회
-   @RequestMapping(value="/board/view")
+ /*게시물 조회*/
+   @RequestMapping(value="/admin/view")
    public String view(ModelMap model, HttpServletRequest request, HttpServletResponse response)
    {
       String cookieUserId = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
       long hiBbsSeq = HttpUtil.get(request, "hiBbsSeq", (long)0);
-      String searchType = HttpUtil.get(request, "searchType", "");
-      String searchValue = HttpUtil.get(request, "searchValue", "");
-      long curPage = HttpUtil.get(request, "curPage", (long)1);
+
       //본인글 확인 여부
       String boardMe = "N";
       
-      HiBoard hiBoard = null;
+      Admin admin = null;
       
       logger.debug("1111111111111111===================================================");
       logger.debug("===== hiBbsSeq [" + hiBbsSeq + "]==============================");
       
       
-      if(hiBbsSeq > 0)
-      {
-         hiBoard = hiBoardService.boardView(hiBbsSeq);
+      //if(hiBbsSeq > 0)
+      //{
+         admin = adminService.adminView(hiBbsSeq);
+         System.out.println("게시물 번호" + admin.getHiBbsSeq());
+         System.out.println("게시물 제목" + admin.getHiBbsTitle());
+         System.out.println("게시물 내용" + admin.getHiBbsContent());
+         System.out.println("게시물 작성자" + admin.getAdminId());
          
-         if(hiBoard != null && StringUtil.equals(hiBoard.getUserId(), cookieUserId))
-         {
-            boardMe = "Y";   //본인글인 경우
-         }
-      }
+      //}
       model.addAttribute("hiBbsSeq", hiBbsSeq);
-      model.addAttribute("hiBoard", hiBoard);
-      model.addAttribute("boardMe", boardMe);
-      model.addAttribute("searchType", searchType);
-      model.addAttribute("searchValue", searchValue);
-      model.addAttribute("curPage", curPage);
+      model.addAttribute("admin", admin);
+
       
       long totalCount = 0;
       //게시물 리스트
-      List<HiBoard> list = null;
+      List<Admin> list = adminDao.testList(admin);
       
       //게시물 답글 리스트
-      List<HiBoard> replylist = null;
+      List<Admin> replylist = null;
       
-      //페이징 객체
-      Paging paging = null;
       
-      //조회객체
-      HiBoard search = new HiBoard();
+
+        replylist = adminService.testReplyList(admin);
+
       
-      if(!StringUtil.isEmpty(searchType) && !StringUtil.isEmpty(searchValue))
-      {
-         search.setSearchType(searchType);
-         search.setSearchValue(searchValue);
-      }
-      else
-      {
-         searchType = "";
-         searchValue = "";
-      }
+        model.addAttribute("replylist", replylist);
       
-      totalCount = hiBoardService.boardListCount(search);
+      return "/admin/view";
+   }
+
+   @RequestMapping(value="/admin/adminCustomerList")
+   public String adminCustomerList(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+   {
+      //if(CookieUtil.getCookie(request, AUTH_COOKIE_NAME) != null)
+     // {
+          //CookieUtil.deleteCookie(request, response, "/", AUTH_COOKIE_NAME);
+        
+        //게시물 리스트
+          
+	      Admin admin = new Admin();
+	   
+          List<Admin> adminCustomerList = adminDao.qList(admin);
+          
+           model.addAttribute("adminCustomerList", adminCustomerList);
+           
+     // }
       
-      logger.debug("totalCount : " + totalCount);
-      logger.debug("curPage : " + curPage);
-      
-      if(totalCount > 0)
-      {
-         paging = new Paging("/board/view", totalCount, LIST_COUNT, PAGE_COUNT, curPage, "curPage");
-         
-         paging.addParam("searchType", searchType);
-         paging.addParam("searchValue", searchValue);
-         paging.addParam("curPage", curPage);
-         
-         search.setStartRow(paging.getStartRow());
-         search.setEndRow(paging.getEndRow());
-         
-         list = hiBoardService.boardList(search);
-         
-         /////
-         logger.debug("===================================================");
-         logger.debug("===================== hiBoard bbs_seq [" + hiBoard.getHiBbsSeq() + "]======================================");
-         replylist = hiBoardService.boardReplyList(hiBoard);
-      }
-      
-      model.addAttribute("list", list);
-      model.addAttribute("paging", paging);
-      model.addAttribute("replylist", replylist);
-      
-      return "/board/view";
-   }*/
+      return "/admin/adminCustomerList";
+   }
+   ////////////////////////////////
    
+   //회원 강제탈퇴, 강탈 페이지로 연결
+   @RequestMapping("admin/adminDelete")
+   public String adminDelete() {
+      
+      return "/admin/adminDelete";
+   }
+   
+   //회원 강제탈퇴 버튼 누를 시
+   @RequestMapping("admin/adminDeleteForm")
+   public ModelAndView adminDelete(String userId2) throws Exception{
+      //유저 아이디 강탈하기 위해 담음
+      Admin admin = new Admin();
+      admin.setUserId2(userId2);
+      
+      //회원탈퇴 체크를 하기 위한 메소드, 탈퇴시키려는 회원의 아이디가 있는지 검사 한 후 result에 저장
+      adminDao.adminDelete(admin);
+      
+      ModelAndView mav = new ModelAndView();
+      
+      if(admin.getUserId2() != null) {   //회원 강탈 성공
+         mav.setViewName("/admin/adminDelete");
+         mav.addObject("message", "회원 강제탈퇴 완료");
+      }
+      
+      else {
+         //mav.setViewName("/admin/adminDelete");
+         mav.addObject("message", "목록에 없는 회원입니다. 다시 확인 바랍니다.");
+      }
+      
+      return mav;
+   }
+
    
 }

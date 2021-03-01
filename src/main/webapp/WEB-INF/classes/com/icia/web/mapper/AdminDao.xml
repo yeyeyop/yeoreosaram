@@ -11,6 +11,8 @@
    <result column="USER_EMAIL2" property="userEmail2" />
 </resultMap>
 
+
+
 <select id="adminSelect" parameterType="string" resultMap="adminResultMap">
 SELECT 
     ADMIN_ID, 
@@ -35,9 +37,92 @@ ORDER BY userName2
 <!-- 유저 리스트 끝 -->
 
 <!-- 회원관리 삭제 시작 -->
-<delete id="userDelete" parameterType="string">
+<delete id="adminDelete">
 DELETE FROM TBL_USER2
- WHERE USER_ID2 = #{value}
+ WHERE USER_ID2 = #{userId2}
 </delete>
 <!-- 회원관리 삭제 끝 -->
+
+
+<!-- 동행 게시판 시작 -->
+<select id ="testList" resultType="com.icia.web.model.Admin">
+SELECT a.HIBBS_SEQ as hiBbsSeq,
+       a.USER_ID as userId,
+       b.USER_NAME2 as userName2,
+       a.HIBBS_GROUP as hiBbsGroup,
+       a.HIBBS_ORDER as hiBbsOrder,
+       a.HIBBS_INDENT as hiBbsIndent,
+       a.HIBBS_TITLE as hiBbsTitle,
+       a.HIBBS_CONTENT as hiBbsContent,
+       a.HIBBS_READ_CNT as hiBbsReadCnt,
+       a.REG_DATE as regDate,
+       a.HIBBS_PARENT as hiBbsParent
+FROM  tbl_hiboard a , tbl_user2 b
+where a.user_id = b.user_id2
+</select>
+
+<!-- 게시물 조회 시작 -->
+<select id="testSelect" parameterType="long"  resultType="com.icia.web.model.Admin">
+SELECT
+    A.HIBBS_SEQ as hiBbsSeq,
+    NVL(A.USER_ID, '') AS userId,
+    NVL(B.USER_NAME2, '') AS userName2, 
+    NVL(B.USER_EMAIL2, '') AS userEmail,
+    NVL(A.HIBBS_GROUP, 0) AS hiBbsGroup,
+    NVL(A.HIBBS_ORDER, 0) AS hiBbsOrder,
+    NVL(A.HIBBS_INDENT, 0) AS hiBbsIndent,
+    NVL(A.HIBBS_TITLE, '') AS hiBbsTitle,
+    NVL(A.HIBBS_CONTENT, '') AS hiBbsContent,
+    NVL(A.HIBBS_READ_CNT, 0) AS hiBbsReadCnt,
+    NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS regDate,
+    NVL(A.HIBBS_PARENT, 0) AS hiBbsParent
+FROM
+    TBL_HIBOARD A, TBL_USER2 B
+WHERE 
+    A.HIBBS_SEQ = #{value}
+AND A.USER_ID = B.USER_ID2
+</select>
+<!-- 게시물 조회 끝 -->
+<!-- 게시물 삭제 시작  -->
+<delete id="adminListDelete" parameterType="long">
+DELETE FROM TBL_HIBOARD
+ WHERE HIBBS_SEQ = #{value}
+</delete>
+<!--게시물 삭제 끝 -->
+<!-- 답변 리스트 시작 -->
+<select id="testReplyList" parameterType="com.icia.web.model.Admin" resultType="com.icia.web.model.Admin">
+ SELECT 
+ HIBBS_SEQ as hiBbsSeq,
+       NVL(A.USER_ID, '') AS userId,
+       NVL(B.USER_EMAIL2, '') AS userEmail,
+       NVL(A.HIBBS_GROUP, '') AS hiBbsGroup,
+       NVL(A.HIBBS_ORDER, '') AS hiBbsOrder,
+       NVL(A.HIBBS_INDENT, '') AS hiBbsIndent,
+       NVL(A.HIBBS_TITLE, '') AS hiBbsTitle,
+       NVL(A.HIBBS_CONTENT, '') AS hiBbsContent,
+       NVL(A.HIBBS_READ_CNT, '') AS hiBbsReadCnt,
+       NVL(TO_CHAR(A.REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') AS REG_DATE,
+       NVL(A.HIBBS_PARENT, '') AS hiBbsParent
+FROM TBL_HIBOARD A, TBL_USER2 B
+WHERE HIBBS_PARENT = #{hiBbsSeq}
+  AND A.USER_ID = B.USER_ID2
+ORDER BY REG_DATE DESC
+</select>
+<!-- 답변 리스트 끝 -->
+<!-- 동행 게시판 끝 -->
+<!-- QnA 부분 -->
+<select id ="qList" resultType="com.icia.web.model.Admin">
+SELECT a.QNA_HIBBS_SEQ as qnaHiBbsSeq,
+       a.USER_ID as userId,
+       b.USER_NAME2 as userName2,
+       a.QNA_HIBBS_GROUP as qnaHiBbsGroup,
+       a.QNA_HIBBS_ORDER as qnaHiBbsOrder,
+       a.QNA_HIBBS_INDENT as qnaHiBbsIndent,
+       a.QNA_HIBBS_TITLE as qnaHiBbsTitle,
+       a.QNA_HIBBS_CONTENT as qnaHiBbsContent,
+       a.QNA_HIBBS_READ_CNT as qnaHiBbsReadCnt,
+       a.REG_DATE as regDate
+FROM  qna_hiboard a , tbl_user2 b
+where a.user_id = b.user_id2
+</select>
 </mapper>

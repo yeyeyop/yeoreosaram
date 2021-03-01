@@ -12,15 +12,15 @@
 <script type="text/javascript">
 $(document).ready(function() {
 <c:choose>
-   <c:when test="${empty hiBoard}">
-   alert("조회하신 게시물이 존재하지 않습니다.(관리자 페이지에유)");
+   <c:when test="${empty admin}">
+   //alert("조회하신 게시물이 존재하지 않습니다.(관리자 페이지에유)");
    document.bbsForm.action = "/admin/view";
    document.bbsForm.submit();
    </c:when>
    <c:otherwise>
 
    $("#btnList").on("click", function() {
-      document.bbsForm.action = "/board/list";
+      document.bbsForm.action = "/admin/list";
       document.bbsForm.submit();
    });
    
@@ -88,8 +88,7 @@ $(document).ready(function() {
    });
    
    $("#btnReplyDelete ").on("click", function(){
-	   
-	  // alert("저를 눌렀나용?");
+
 	       if(confirm("댓글을 삭제 하시겠습니까?") == true)
 	      {
 	         $.ajax({
@@ -151,8 +150,8 @@ $(document).ready(function() {
 <body>
 
 <!--  게시물 리스트 출력 -->
-<c:if test="${!empty hiBoard}">
-<%@ include file="/WEB-INF/views/include/teamNavigation.jsp" %>
+<c:if test="${!empty admin}">
+<%@ include file="/WEB-INF/views/include/adminNavigation.jsp" %>
 <div class="container">
    <h2>게시물 보기</h2>
    <div class="row" style="margin-right:0; margin-left:0;">
@@ -160,22 +159,20 @@ $(document).ready(function() {
          <thead>
             <tr class="table-active" style="color:#939597">
                <th scope="col" style="width:60%">
-                  <c:out value="${hiBoard.hiBbsTitle}" /><br/>
-                  <c:out value="${hiBoard.userName}" />&nbsp;&nbsp;&nbsp;
-                  <a href="mailto:${hiBoard.userEmail}" style="color:#828282;">${hiBoard.userEmail}</a>
-   <c:if test="${!empty hiBoard.hiBoardFile}">
-                  &nbsp;&nbsp;&nbsp;<a href="/board/download?hiBbsSeq=${hiBoard.hiBoardFile.hiBbsSeq}" style="color:#000;">[첨부파일]</a>
-    </c:if>                
+                  <c:out value="${admin.hiBbsTitle}" /><br/>
+                  <c:out value="${admin.userName2}" />&nbsp;&nbsp;&nbsp;
+                  <a href="mailto:${admin.userEmail}" style="color:#828282;">${admin.userEmail}</a>
+                
                </th>
                <th scope="col" style="width:40%" class="text-right">
-                  조회 : <fmt:formatNumber type="number" maxFractionDigits="3" value="${hiBoard.hiBbsReadCnt}" /><br/>
-                  ${hiBoard.regDate}
+                  조회 : <fmt:formatNumber type="number" maxFractionDigits="3" value="${admin.hiBbsReadCnt}" /><br/>
+                  ${admin.regDate}
                </th>
             </tr>
          </thead>
          <tbody>
             <tr>
-               <td colspan="2"><pre><c:out value="${hiBoard.hiBbsContent}" /></pre></td>
+               <td colspan="2"><pre><c:out value="${admin.hiBbsContent}" /></pre></td>
             </tr>
          </tbody>
          <tfoot>
@@ -196,24 +193,25 @@ $(document).ready(function() {
       </tr>
       </thead>
       <tbody>
+     
 <c:if test="${!empty replylist}">
-   <c:forEach var="hiBoard" items="${replylist}" varStatus="status"> 
-      <c:if test="${hiBoard.hiBbsParent eq hiBoard.hiBbsGroup}"> 
+   <c:forEach var="admin" items="${replylist}" varStatus="status"> 
+      <c:if test="${admin.hiBbsParent eq admin.hiBbsGroup}"> 
       <tr>
          <td>
-      
+         
          <img src="/resources/images/icon_reply.gif" style="margin-left: ${hiBoard.hiBbsIndent}em;"/>
       
-               <c:out value="${hiBoard.hiBbsContent}" />
+               <c:out value="${admin.hiBbsContent}" />
             
          </td>
-         <td class="text-center"><c:out value="${hiBoard.userEmail}" /></td>
-         <td class="text-center">${hiBoard.regDate}</td>
-          <td>${hiBoard.hiBbsSeq}<button id="btnReplyDelete" class="btn btn-secondary">댓글 삭제</button></td>
+         <td class="text-center"><c:out value="${admin.userEmail}" /></td>
+         <td class="text-center">${admin.regDate}</td>
+          <td>${admin.hiBbsSeq}<button id="btnReplyDelete" class="btn btn-secondary">댓글 삭제</button></td>
       </tr>
      </c:if>
    </c:forEach>
-</c:if>
+</c:if>  
       </tbody>
       <tfoot>
       <tr>
@@ -230,26 +228,13 @@ $(document).ready(function() {
    <!-- btn-group은 색상 -->
    <div class="btn-group">
    <button type="button" id="btnList" class="btn btn-secondary">리스트</button>
-<%
-   if(com.icia.web.util.CookieUtil.getCookie(request, (String)request.getAttribute("AUTH_COOKIE_NAME")) != null)
-   {
-%>  
-   <button type="button" id="btnReply" class="btn btn-secondary">댓글달기</button>
-<%
-   }
-   else
-   {
-      
-   }
-%>     
-   <c:if test="${boardMe eq 'Y'}">
    <button type="button" id="btnUpdate" class="btn btn-secondary">수정</button>
    <button type="button" id="btnDelete" class="btn btn-secondary">삭제</button>
    </c:if>
    <br/>
    <br/>
-</div>
-</c:if>
+  
+	</div>
 </div>
 <form name="bbsForm" id="bbsForm" method="post">
    <input type="hidden" name="hiBbsSeq" value="${hiBbsSeq}" />

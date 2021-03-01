@@ -96,7 +96,8 @@ $(document).ready(function() {
 	            type : "POST",
 	            url : "/board/replyDelete",
 	            data : {
-	               hiBbsSeq : <c:out value="${hiBoard.hiBbsSeq}" />
+	               //hiBbsSeq : <c:out value="${hiBoard.hiBbsSeq}" />
+	               hiBbsSeq : document.getElementById("btnReplyDelete").value
 	            },
 	            datatype : "JSON",
 	            beforeSend : function(xhr){
@@ -188,9 +189,10 @@ $(document).ready(function() {
      <table class="table table-hover">
       <thead>
       <tr style="background-color: #dee2e6;">
-         <th scope="col" class="text-center" style="width:75%">댓글</th>
-         <th scope="col" class="text-center" style="width:10%">작성자</th>
-         <th scope="col" class="text-center" style="width:15%">날짜</th>
+         <th scope="col" class="text-center" style="width:50%">댓글</th>
+         <th scope="col" class="text-center" style="width:20%">작성자</th>
+         <th scope="col" class="text-center" style="width:19%">날짜</th>
+         <th scope="col" class="text-center" style="width:11%"></th>
       </tr>
       </thead>
       <tbody>
@@ -207,7 +209,7 @@ $(document).ready(function() {
          </td>
          <td class="text-center"><c:out value="${hiBoard.userEmail}" /></td>
          <td class="text-center">${hiBoard.regDate}</td>
-          <td>${hiBoard.hiBbsSeq}<button id="btnReplyDelete" class="btn btn-secondary">댓글 삭제</button></td>
+          <td><button id="btnReplyDelete" class="btn btn-secondary" value="${hiBoard.hiBbsSeq}">댓글삭제</button></td>
       </tr>
      </c:if>
    </c:forEach>

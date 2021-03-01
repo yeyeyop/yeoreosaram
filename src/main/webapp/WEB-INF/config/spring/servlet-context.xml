@@ -62,11 +62,13 @@
                   <list>
                      <value>/index</value>
                      <value>/admin/index</value>
+                     <value>/admin/adminHome</value>
                      <value>/mainHome</value>
                      <value>/member/email</value>
                      <value>/member/join_injeung</value>
                      <value>/member/auth.do</value>
                      <value>/board/list</value>
+                     <value>/board/customerList</value>
                      <value>/board/view</value>
                      <value>/user/login2</value>
                      <value>/user/loginOut2</value>
@@ -74,8 +76,7 @@
                      <value>/user/regProc2</value>
                      <value>/user/idCheck2</value>
                      <value>/admin/login2</value>
-                     <value>/admin/loginOut2</value>
-                     
+                     <value>/admin/logOut2</value>
                   </list>
                </constructor-arg>
             </bean>

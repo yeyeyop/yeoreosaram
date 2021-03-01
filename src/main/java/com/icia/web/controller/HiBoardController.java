@@ -677,7 +677,8 @@ public class HiBoardController
    public Response<Object> ReplyDelete(HttpServletRequest request, HttpServletResponse response)
    {
       String cookieUserId = CookieUtil.getHexValue(request, AUTH_COOKIE_NAME);
-      long hiBbsSeq = HttpUtil.get(request, "hiBbsSeq", (long)0);         //View.jsp에서 ajax를 통해 hiBbsSeq를 요청
+      long hiBbsSeq = HttpUtil.get(request, "hiBbsSeq", (long)0);  
+      //View.jsp에서 ajax를 통해 hiBbsSeq를 요청
       
       Response<Object> ajaxResponse = new Response<Object>();
       
@@ -693,7 +694,7 @@ public class HiBoardController
                {
                  
                                                       
-                     if(hiBoardService.boardReplyDelete(parentHiBoard.getHiBbsSeq()) > 0)
+                     if(hiBoardService.boardReplyDelete(parentHiBoard.getHiBbsSeq(), parentHiBoard.getHiBbsOrder()) > 0)
                      {
                         ajaxResponse.setResponse(0, "Seccess");
                      }

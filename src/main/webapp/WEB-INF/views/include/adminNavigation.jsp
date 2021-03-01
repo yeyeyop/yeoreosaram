@@ -21,14 +21,14 @@
            <a class="nav-link" href="/user/loginOut">로그아웃</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" href="/board/list">동행게시판</a>
+           <a class="nav-link" href="/admin/list">동행게시판</a>
          </li>
          <li class="nav-item">
            <a class="nav-link" href="${path}/admin/adminList">회원관리</a>
               
          </li>
          <li class="nav-item">
-           <a class="nav-link" href="/board/customerList">고객센터</a>
+           <a class="nav-link" href="/admin/adminCustomerList">고객센터</a>
          </li>
        </ul> 
      </div>   
@@ -43,7 +43,7 @@
            <a class="nav-link" href="index">로그인</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" href="/board/customerList">고객센터</a>
+           <a class="nav-link" href="/admin/adminCustomerList">고객센터</a>
          </li>
        </ul>
      </div>

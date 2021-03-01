@@ -346,11 +346,11 @@ ORDER BY REG_DATE DESC
 </select>
 <!-- 답변 리스트 끝 -->
 <!-- 답변 삭제 시작 -->
-<delete id="boardReplyDelete" parameterType="long">
+<delete id="boardReplyDelete" parameterType="com.icia.web.model.HiBoard">
 DELETE FROM TBL_HIBOARD
- WHERE HIBBS_GROUP = #{hiBbsSeq} 
+ WHERE HIBBS_SEQ = #{hiBbsSeq} 
    AND HIBBS_INDENT = 1
-<!--     AND HIBBS_ORDER = #{hiBbsOrder} -->
+   AND HIBBS_ORDER = #{hiBbsOrder} 
 </delete>
 <!-- 답변 삭제 끝 -->
 </mapper>
